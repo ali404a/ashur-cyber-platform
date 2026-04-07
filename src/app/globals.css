@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Outfit:wght@400;700;900&display=swap');
 
 :root {
   --background: #020617;
@@ -7,6 +8,8 @@
   --secondary: #00E5FF; /* Tech Blue */
   --accent: #1e293b;
   --card-bg: rgba(15, 23, 42, 0.8);
+  --font-arabic: 'Cairo', sans-serif;
+  --font-english: 'Outfit', sans-serif;
 }
 
 @theme inline {
@@ -16,14 +19,15 @@
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-card-bg: var(--card-bg);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-english);
+  --font-arabic: var(--font-arabic);
   --font-mono: var(--font-inter-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-arabic);
   overflow-x: hidden;
 }
 
@@ -33,19 +37,44 @@ body {
     linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
   background-size: 50px 50px;
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
 }
 
 .glass-morphism {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
 }
 
 .neon-border {
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.3), inset 0 0 5px rgba(0, 255, 65, 0.3);
-  border: 1px solid var(--primary);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2), inset 0 0 8px rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.4);
 }
 
 .neon-text {
-  text-shadow: 0 0 10px var(--primary);
+  text-shadow: 0 0 12px var(--primary);
 }
+
+.nebula-glow {
+  filter: blur(80px);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.1), transparent);
+  height: 2px;
+  width: 100%;
+  animation: scanline 4s linear infinite;
+}
+
