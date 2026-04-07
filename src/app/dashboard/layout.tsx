@@ -18,7 +18,8 @@ import {
   BookOpen
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { logout } from "@/app/actions/authActions";
 
 export default function DashboardLayout({
   children,
@@ -28,6 +29,12 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [userRole, setUserRole] = useState("student");
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    await logout();
+    router.push("/staff");
+  }
 
   useEffect(() => {
     // Get role from cookie on client
@@ -92,10 +99,10 @@ export default function DashboardLayout({
             <Settings className="w-5 h-5 group-hover:rotate-45 transition-transform" />
             {isSidebarOpen && <span className="text-sm">الإعدادات</span>}
           </button>
-          <Link href="/" className="w-full flex items-center gap-4 p-3 text-red-500/60 hover:text-red-400 transition-colors">
+          <button onClick={handleLogout} className="w-full flex items-center gap-4 p-3 text-red-500/60 hover:text-red-400 transition-colors">
             <LogOut className="w-5 h-5" />
-            {isSidebarOpen && <span className="text-sm">خروج</span>}
-          </Link>
+            {isSidebarOpen && <span className="text-sm">تسجيل الخروج</span>}
+          </button>
         </div>
       </aside>
 
