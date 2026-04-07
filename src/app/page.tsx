@@ -130,12 +130,12 @@ export default function LandingPage() {
         </AnimatePresence>
       </section>
 
-      {/* Intelligence Modules (Features) */}
+      {/* Tactical Modules (Features) */}
       <section id="subjects" className="relative py-40 px-4 md:px-8 bg-black/60 backdrop-blur-md z-20 border-y border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center mb-24 text-center">
             <h2 className="text-[10px] font-mono text-primary tracking-[0.8em] uppercase font-bold mb-4">Tactical_Capabilities</h2>
-            <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter">وحدات استخباراتية متقدمة</h3>
+            <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter">وحدات تقنية متقدمة</h3>
             <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mt-8 rounded-full" />
           </div>
 
@@ -158,14 +158,14 @@ export default function LandingPage() {
               delay={0.5}
               tag="SEC_MOD_03"
               icon={<Globe className="w-10 h-10 text-primary" />}
-              title="تشفير الكم (Quantum)"
-              description="دراسة آليات التشفير المستقبلية التي تعتمد على ميكانيكا الكم لحماية البيانات فائقة السرية."
+              title="تشفير البيانات"
+              description="دراسة آليات التشفير المتقدمة وحماية البيانات فائقة السرية من الاختراقات المعاصرة."
             />
           </div>
         </div>
       </section>
 
-      {/* Strategic Intelligence Dossier (About) */}
+      {/* Strategic Overview (About) */}
       <section id="about" className="relative py-40 px-4 md:px-8 z-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
           <motion.div
