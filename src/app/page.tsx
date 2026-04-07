@@ -87,8 +87,8 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Feature Section */}
-      <section className="py-32 px-4 md:px-8 bg-black/40 backdrop-blur-md relative z-10 border-y border-white/5">
+      {/* Feature Section (Subjects) */}
+      <section id="subjects" className="py-32 px-4 md:px-8 bg-black/40 backdrop-blur-md relative z-10 border-y border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
@@ -125,7 +125,7 @@ export default function LandingPage() {
       </section>
 
       {/* Stats/About Section */}
-      <section className="py-40 px-4 md:px-8 relative overflow-hidden z-10">
+      <section id="about" className="py-40 px-4 md:px-8 relative overflow-hidden z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: 50 }}
@@ -195,8 +195,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-20 border-t border-white/5 px-4 md:px-8 text-center bg-black/20 backdrop-blur-xl relative z-10">
+      {/* Footer (Contact) */}
+      <footer id="contact" className="py-20 border-t border-white/5 px-4 md:px-8 text-center bg-black/20 backdrop-blur-xl relative z-10">
         <div className="flex items-center justify-center gap-6 mb-8 text-slate-500 font-bold">
            <Link href="#" className="hover:text-primary transition-colors">عن القسم</Link>
            <Link href="#" className="hover:text-primary transition-colors">الشروط</Link>
