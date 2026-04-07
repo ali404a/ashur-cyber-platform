@@ -1,25 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { loginStaff } from "@/app/actions/authActions";
 import { 
   ShieldCheck, 
   Lock, 
   Phone, 
-  ArrowLeft, 
-  Zap, 
+  Eye, 
+  EyeOff, 
   Loader2,
-  AlertCircle,
-  Eye,
-  EyeOff
+  ChevronLeft,
+  Activity,
+  UserCheck
 } from "lucide-react";
 import Link from "next/link";
-import { loginStaff } from "@/app/actions/authActions";
-import { useRouter } from "next/navigation";
 
 export default function StaffLoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -43,127 +43,117 @@ export default function StaffLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 font-arabic selection:bg-primary/30 relative overflow-hidden">
-      {/* Dynamic Background Effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,65,0.03)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-[#020617] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden font-arabic selection:bg-primary/20">
       
-      <div className="w-full max-w-lg relative z-10">
-        {/* Horizontal Navigation Link */}
-        <div className="mb-10 flex justify-start">
-          <Link 
-            href="/" 
-            className="flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-slate-500 hover:text-primary transition-all group bg-white/5 px-5 py-2.5 rounded-full border border-white/5"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            العودة للمنصة الرئيسية
-          </Link>
-        </div>
+      {/* Cinematic Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full" />
+      </div>
 
-        {/* Tactical Command Header */}
-        <div className="text-center mb-10 space-y-6">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group relative">
-            <div className="absolute inset-0 bg-primary/20 rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
-            <ShieldCheck className="w-12 h-12 text-primary relative z-10" />
-          </div>
-          <div className="space-y-2">
-            <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-tight">
-              مركز_قيادة_الكادر
-            </h1>
-            <div className="flex items-center justify-center gap-3">
-               <div className="h-px w-8 bg-slate-800" />
-               <p className="text-[10px] text-slate-500 font-mono uppercase tracking-[0.4em]">Auth_Protocol_v4.2</p>
-               <div className="h-px w-8 bg-slate-800" />
-            </div>
-          </div>
+      {/* Floating Shield Icon */}
+      <div className="relative z-10 mb-10 group">
+        <div className="w-24 h-24 bg-primary/20 rounded-[2.8rem] flex items-center justify-center border border-primary/30 shadow-[0_0_50px_rgba(0,255,65,0.2)] group-hover:shadow-[0_0_70px_rgba(0,255,65,0.4)] transition-all duration-700 active:scale-95">
+           <ShieldCheck className="w-12 h-12 text-primary drop-shadow-[0_0_15px_rgba(0,255,65,1)]" />
         </div>
+        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary/10 border border-primary/20 p-1 rounded-full px-3 backdrop-blur-xl">
+           <Activity className="w-3 h-3 text-primary animate-pulse" />
+        </div>
+      </div>
 
-        {/* Authenticative Shield Form */}
-        <div className="glass-morphism p-10 md:p-14 rounded-[4rem] border-white/5 shadow-2xl relative overflow-hidden backdrop-blur-3xl">
-          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      {/* Header Section */}
+      <div className="relative z-10 text-center mb-12 space-y-3">
+        <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent italic uppercase pr-2">
+           مركز_قيادة_الكادر
+        </h1>
+        <div className="flex items-center justify-center gap-3">
+          <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-primary/40" />
+          <p className="text-[10px] md:text-sm text-slate-500 font-mono tracking-[0.5em] uppercase">Auth_Protocol_v4.2</p>
+          <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-primary/40" />
+        </div>
+      </div>
+
+      {/* Login Card */}
+      <div className="relative z-10 w-full max-w-md">
+        <div className="glass-morphism p-10 md:p-12 rounded-[3.5rem] border-white/5 shadow-2xl relative group">
           
-          <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
-            {/* Field: Phone Input */}
-            <div className="space-y-4">
-              <label className="flex items-center justify-between px-3">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">رقم الهوية الإداري (الهاتف)</span>
-                <Phone className="w-3.5 h-3.5 text-primary/60" />
-              </label>
-              <div className="relative group">
+          <form onSubmit={handleSubmit} className="space-y-8 text-right">
+            
+            {/* Phone Input */}
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] block pr-4">رقم الهوية الإداري (الهاتف)</label>
+              <div className="relative group/field">
+                <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within/field:text-primary transition-all duration-500" />
                 <input 
                   name="phone"
+                  type="text"
                   required
-                  type="text" 
-                  placeholder="077XXXXXXXX"
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-[1.8rem] px-8 py-5 text-xl font-mono focus:border-primary/40 outline-none transition-all placeholder:text-slate-800 group-hover:bg-white/[0.06] shadow-inner"
+                  placeholder="07XXXXXXXXX"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-[1.8rem] py-5 px-8 pl-14 text-sm text-white placeholder:text-slate-700 focus:outline-none focus:border-primary/40 focus:bg-white/[0.06] transition-all duration-500 font-mono italic"
                 />
               </div>
             </div>
 
-            {/* Field: Password Input with Toggle */}
-            <div className="space-y-4">
-              <label className="flex items-center justify-between px-3">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">رمز المرور الأمني</span>
-                <Lock className="w-3.5 h-3.5 text-primary/60" />
-              </label>
-              <div className="relative group">
+            {/* Password Input */}
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] block pr-4">رمز المرور الأمني</label>
+              <div className="relative group/field">
+                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within/field:text-primary transition-all duration-500" />
                 <input 
                   name="password"
-                  required
                   type={showPassword ? "text" : "password"}
+                  required
                   placeholder="••••••••"
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-[1.8rem] px-8 py-5 text-xl focus:border-primary/40 outline-none transition-all placeholder:text-slate-800 group-hover:bg-white/[0.06] shadow-inner"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-[1.8rem] py-5 px-8 pl-14 text-sm text-white placeholder:text-slate-700 focus:outline-none focus:border-primary/40 focus:bg-white/[0.06] transition-all duration-500"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-600 hover:text-primary transition-colors p-2"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-700 hover:text-white transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
+            {/* Error Message */}
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 p-5 rounded-3xl flex items-start gap-4 animate-shake">
-                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                <p className="text-xs font-bold text-red-200 leading-relaxed italic">{error}</p>
+              <div className="p-5 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center gap-3 animate-shake">
+                 <div className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                 <span className="text-[11px] font-black text-red-500/80">{error}</span>
               </div>
             )}
 
-            {/* Tactical Access Trigger */}
+            {/* Action Triggers */}
             <button 
+              type="submit"
               disabled={loading}
-              className="w-full group relative overflow-hidden bg-primary text-background font-black py-6 rounded-[2.2rem] transition-all hover:scale-[1.02] active:scale-95 shadow-[0_20px_60px_rgba(0,255,65,0.15)] disabled:opacity-50"
+              className="w-full py-6 rounded-[2rem] bg-primary text-background font-black text-xs uppercase tracking-widest flex items-center justify-center gap-4 hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 shadow-[0_0_40px_rgba(0,255,65,0.2)] disabled:opacity-50 group/btn"
             >
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              <div className="relative flex items-center justify-center gap-4">
-                {loading ? (
-                  <Loader2 className="w-7 h-7 animate-spin" />
-                ) : (
-                  <>
-                    <Zap className="w-6 h-6 fill-current" />
-                    <span className="text-2xl tracking-tighter italic">ولوج_مركز_العمليات</span>
-                  </>
-                )}
-              </div>
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <UserCheck className="w-5 h-5 group-hover/btn:rotate-12 transition-transform" />
+                  بدء الجلسة الإدارية
+                </>
+              )}
             </button>
           </form>
         </div>
-
-        {/* Tactical Metadata Footer */}
-        <div className="mt-14 flex items-center justify-between px-8 opacity-40 group hover:opacity-100 transition-opacity">
-           <div className="text-[9px] font-mono tracking-[0.3em] text-slate-500 flex items-center gap-3">
-             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-             NODE_SECURE // AES_256
-           </div>
-           <div className="w-16 h-px bg-slate-800" />
-           <div className="text-[9px] font-mono tracking-[0.2em] text-slate-500 uppercase font-black">
-             ASHUR_CYBER_PLATFORM
-           </div>
-        </div>
       </div>
+
+      {/* Footer Navigation */}
+      <div className="relative z-10 mt-12 flex flex-col items-center gap-6">
+        <Link 
+          href="/" 
+          className="flex items-center gap-3 text-[10px] text-slate-600 hover:text-primary transition-all font-mono uppercase tracking-[0.3em] group"
+        >
+          <ChevronLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
+          Back_To_Campus_Interface
+        </Link>
+      </div>
+
     </div>
   );
 }

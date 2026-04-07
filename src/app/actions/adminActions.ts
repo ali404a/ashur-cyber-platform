@@ -73,3 +73,37 @@ export async function deleteUser(userId: string) {
     return { success: false, error: error.message };
   }
 }
+
+/**
+ * Creates a new staff member (Admin/Management)
+ */
+export async function createStaffAccount(formData: FormData) {
+  try {
+    await dbConnect();
+    
+    const fullName = formData.get("fullName") as string;
+    const phoneNumber = formData.get("phoneNumber") as string;
+    const password = formData.get("password") as string;
+    const position = formData.get("position") as string;
+    const role = formData.get("role") as "admin" | "management";
+
+    // Hash the staff password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      fullName,
+      phoneNumber,
+      password: hashedPassword,
+      position,
+      role,
+      status: "approved", // Staff created by admin are auto-approved
+    });
+
+    await newUser.save();
+    revalidatePath("/dashboard/admin");
+    return { success: true, message: `تم تفعيل حساب (${fullName}) بنجاح 🛡️` };
+  } catch (error: any) {
+    console.error("Staff creation error:", error);
+    return { success: false, error: "فشل إنشاء الحساب، قد يكون الرقم مسجل مسبقاً" };
+  }
+}

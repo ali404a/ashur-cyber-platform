@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getUsersByStatus, upgradeToAdmin } from "@/app/actions/adminActions";
 import UserApprovalList from "@/components/admin/UserApprovalList";
+import AddStaffForm from "@/components/admin/AddStaffForm";
 
 export default async function AdminPortalPage() {
   const cookieStore = await cookies();
@@ -67,6 +68,11 @@ export default async function AdminPortalPage() {
             <span className="text-[9px] font-black text-red-600/60 uppercase tracking-widest block mb-1">طلبات مرفوضة</span>
             <span className="text-3xl font-black text-red-500 italic">{rejectedUsers?.length || 0}</span>
          </div>
+      </div>
+
+      {/* Staff Management Section */}
+      <div className="space-y-6 pt-6">
+        <AddStaffForm />
       </div>
 
       {/* Pending Queue Section */}

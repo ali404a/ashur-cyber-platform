@@ -17,7 +17,11 @@ const UserSchema = new Schema(
     },
     gradeLevel: {
       type: String,
-      required: [true, "يرجى اختيار المرحلة"],
+      required: false, // Optional for staff
+    },
+    position: {
+      type: String,
+      required: false, // For staff only
     },
     role: {
       type: String,
