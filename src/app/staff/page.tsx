@@ -28,15 +28,16 @@ export default function StaffLoginPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const phone = formData.get("phone") as string;
-    const password = formData.get("password") as string;
-
-    const result = await loginStaff(phone, password);
+    const result = await loginStaff(formData);
     
     if (result.success) {
-      router.push("/dashboard");
+      if (result.role === "admin") {
+        router.push("/dashboard/admin");
+      } else {
+        router.push("/dashboard/manage");
+      }
     } else {
-      setError(result.error || "بيانات الدخول غير صحيحة. يرجى مراجعة الإدارة.");
+      setError(result.message || "بيانات الدخول غير صحيحة. يرجى مراجعة الإدارة.");
       setLoading(false);
     }
   }

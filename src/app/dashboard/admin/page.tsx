@@ -16,11 +16,12 @@ import UserApprovalList from "@/components/admin/UserApprovalList";
 export default async function AdminPortalPage() {
   const cookieStore = await cookies();
   const userPhone = cookieStore.get("user_phone")?.value;
+  const userRole = cookieStore.get("user_role")?.value;
 
-  // Simple auth check
-  if (!userPhone) redirect("/");
+  // Final Authority Guard:
+  if (!userPhone) redirect("/staff");
+  if (userRole !== "admin") redirect("/dashboard");
   
-  // Auto-upgrade your account to Admin for first entry
   await upgradeToAdmin(userPhone);
 
   const { users: pendingUsers } = await getUsersByStatus("pending");
