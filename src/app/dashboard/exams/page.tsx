@@ -10,7 +10,7 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   Search,
-  LayoutPulse,
+  Activity,
   Monitor
 } from "lucide-react";
 
@@ -70,7 +70,7 @@ export default function ExamsPage() {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-3">
-            <LayoutPulse className="text-secondary" />
+            <Activity className="text-secondary" />
             جدول الامتحانات
           </h2>
           <p className="text-slate-500 text-sm">جدول الامتحانات الفصلية والنهائية للمرحلة الثالثة</p>

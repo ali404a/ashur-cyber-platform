@@ -3,20 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Youtube, 
-  Music, 
-  Settings, 
-  Maximize2, 
-  Minimize2,
-  Brain,
-  Coffee,
-  Zap,
-  Volume2,
-  ExternalLink,
-  ChevronRight
+  Play, Pause, RotateCcw, Video, Music, Settings, Maximize2, Minimize2,
+  Brain, Coffee, Zap, Volume2, ExternalLink, ChevronRight, Monitor
 } from "lucide-react";
 
 export default function StudySessionPage() {
@@ -159,7 +147,7 @@ export default function StudySessionPage() {
           <div className="glass-morphism p-6 rounded-3xl border-secondary/20 min-h-[400px] flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-bold flex items-center gap-2">
-                <Youtube className="text-red-500 w-6 h-6" />
+                <Video className="text-red-500 w-6 h-6" />
                 المشغل التعليمي
               </h3>
               <form onSubmit={handleLinkSubmit} className="flex-1 max-w-sm mx-4 relative">
