@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 
 export const metadata: Metadata = {
   title: "جامعة أشور | قسم هندسة الأمن السيبراني",
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className="h-full antialiased dark">
       <body className="min-h-full flex flex-col bg-background text-foreground font-arabic">
-        <Navbar />
+        <NavbarWrapper />
         {children}
       </body>
     </html>
