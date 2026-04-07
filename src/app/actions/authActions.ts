@@ -61,10 +61,20 @@ export async function loginStudent(formData: FormData) {
       return { success: false, message: "رقم الهاتف أو كلمة المرور غير صحيحة" };
     }
 
-    // In a real app, use NextAuth or JWT. For now, we'll set a cookie manually.
     const { cookies } = await import("next/headers");
-    (await cookies()).set("user_phone", user.phoneNumber, { httpOnly: true, secure: true });
-    (await cookies()).set("user_role", user.role, { httpOnly: true, secure: true });
+    const cookieStore = await cookies();
+    cookieStore.set("user_phone", user.phoneNumber, { 
+      httpOnly: true, 
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60, // 30 Days persistence
+      path: "/",
+    });
+    cookieStore.set("user_role", user.role, { 
+      httpOnly: true, 
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60, // 30 Days persistence
+      path: "/",
+    });
 
     return { success: true, message: "تم تسجيل الدخول بنجاح!" };
   } catch (error: any) {
@@ -98,10 +108,21 @@ export async function loginStaff(formData: FormData) {
       return { success: false, message: "بيانات الدخول غير صحيحة" };
     }
 
-    // Set official staff cookies
+    // Set official staff cookies with long-lived persistence
     const { cookies } = await import("next/headers");
-    (await cookies()).set("user_phone", user.phoneNumber, { httpOnly: true, secure: true });
-    (await cookies()).set("user_role", user.role, { httpOnly: true, secure: true });
+    const cookieStore = await cookies();
+    cookieStore.set("user_phone", user.phoneNumber, { 
+      httpOnly: true, 
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60, // 30 Days persistence
+      path: "/",
+    });
+    cookieStore.set("user_role", user.role, { 
+      httpOnly: true, 
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60, // 30 Days persistence
+      path: "/",
+    });
 
     return { 
       success: true, 
@@ -112,4 +133,15 @@ export async function loginStaff(formData: FormData) {
     console.error("Staff login error:", error);
     return { success: false, message: "فشل الدخول للمسار الإداري" };
   }
+}
+
+/**
+ * Universal Logout Protocol
+ */
+export async function logout() {
+  const { cookies } = await import("next/headers");
+  const cookieStore = await cookies();
+  cookieStore.delete("user_phone");
+  cookieStore.delete("user_role");
+  return { success: true };
 }
