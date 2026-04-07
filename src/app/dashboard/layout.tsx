@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "react-transition-group";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   BarChart3, 
   Calendar, 
