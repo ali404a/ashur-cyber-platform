@@ -48,7 +48,7 @@ export default function DashboardLayout({
     { name: "سشن الدراسة", icon: <Clock className="w-5 h-5" />, href: "/dashboard/study" },
     // Admin only items
     ...(userRole === "admin" ? [
-      { name: "مركز القبول", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/dashboard/admin" },
+      { name: "مركز القيادة", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/admins" },
       { name: "إدارة المحتوى", icon: <Shield className="w-5 h-5 text-secondary" />, href: "/dashboard/manage" },
     ] : []),
     { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },

@@ -32,7 +32,7 @@ export default function StaffLoginPage() {
     
     if (result.success) {
       if (result.role === "admin") {
-        router.push("/dashboard/admin");
+        router.push("/admins");
       } else {
         router.push("/dashboard/manage");
       }
