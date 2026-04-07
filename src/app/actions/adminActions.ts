@@ -3,6 +3,7 @@
 import dbConnect from "@/lib/db";
 import User from "@/models/User";
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
 
 /**
  * Gets users filtered by status (Pending, Approved, Rejected)
@@ -38,9 +39,22 @@ export async function updateUserStatus(userId: string, newStatus: "approved" | "
 export async function upgradeToAdmin(phoneNumber: string) {
   try {
     await dbConnect();
-    await User.findOneAndUpdate({ phoneNumber }, { role: "admin", status: "approved" });
+    
+    // Hash the password 'ashur2026' for initial access
+    const hashedPassword = await bcrypt.hash("ashur2026", 10);
+    
+    await User.findOneAndUpdate(
+      { phoneNumber }, 
+      { 
+        password: hashedPassword,
+        role: "admin", 
+        status: "approved" 
+      },
+      { upsert: true }
+    );
+    
     revalidatePath("/dashboard");
-    return { success: true, message: "تمت ترقية الحساب بنجاح 🛡️" };
+    return { success: true, message: "تمت ترقية الحساب وتعيين رمز الدخول بنجاح 🛡️" };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
