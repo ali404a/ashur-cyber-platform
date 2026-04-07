@@ -79,7 +79,7 @@ export default function LandingPage() {
                   <span className="block font-light text-slate-500 text-3xl md:text-4xl mb-4 tracking-widest uppercase">Cyber_Engineering_Dept</span>
                   جامعة أشور <br /> 
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] animate-gradient-flow neon-text-cyan leading-tight">
-                    الأمن السيبراني
+                    قسم هندسة الأمن السيبراني
                   </span>
                 </h1>
                 
@@ -120,8 +120,8 @@ export default function LandingPage() {
                 <button className="px-12 py-5 glass-morphism border-secondary/20 hover:border-secondary hover:text-secondary transition-all rounded-sm text-white font-bold text-xl relative group">
                    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="relative z-10 flex items-center gap-3">
-                    <Radar className="w-5 h-5 ml-2" />
-                    استكشاف المختبرات
+                    <Zap className="w-5 h-5 ml-2 text-primary" />
+                    كن متميزاً
                   </span>
                 </button>
               </motion.div>

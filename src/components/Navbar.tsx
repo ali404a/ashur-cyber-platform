@@ -19,7 +19,6 @@ export default function Navbar() {
   const navLinks = [
     { name: "الرئيسية", href: "/" },
     { name: "عن القسم", href: "#about" },
-    { name: "المواد الدراسية", href: "#subjects" },
     { name: "تواصل معنا", href: "#contact" },
   ];
 
