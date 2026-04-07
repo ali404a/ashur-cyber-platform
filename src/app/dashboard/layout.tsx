@@ -37,24 +37,24 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
       {/* Mobile Header */}
-      <div className="md:hidden glass-morphism flex items-center justify-between p-4 sticky top-0 z-50">
-        <span className="font-bold text-primary">لوحة الطالب</span>
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-          {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      <div className="md:hidden glass-morphism flex items-center justify-between p-4 px-6 sticky top-0 z-50 border-b border-white/5">
+        <span className="font-bold text-primary tracking-tighter uppercase text-sm">Command_Center</span>
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 bg-white/5 rounded-lg">
+          {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {/* Sidebar */}
       <aside
         className={`${
-          isSidebarOpen ? "w-64" : "w-20"
-        } transition-all duration-300 glass-morphism border-l border-white/5 flex flex-col p-4 fixed right-0 h-full z-40 hidden md:flex`}
+          isSidebarOpen ? "translate-x-0 w-64" : "translate-x-full md:translate-x-0 w-0 md:w-20"
+        } transition-all duration-500 glass-morphism border-l border-white/5 flex flex-col p-4 fixed right-0 h-full z-[60] md:z-40 md:flex overflow-hidden`}
       >
         <div className="mb-10 flex items-center gap-3 px-2">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-black text-background">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-black text-background shadow-[0_0_15px_rgba(0,255,65,0.2)]">
             CY
           </div>
-          {isSidebarOpen && <span className="font-bold text-lg">الأمن السيبراني</span>}
+          {isSidebarOpen && <span className="font-bold text-lg tracking-tighter">الأمن السيبراني</span>}
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -64,22 +64,22 @@ export default function DashboardLayout({
               href={item.href}
               className={`flex items-center gap-4 p-3 rounded-xl transition-all ${
                 pathname === item.href
-                  ? "bg-primary/10 text-primary border border-primary/20"
+                  ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_10px_rgba(0,255,65,0.05)]"
                   : "text-slate-400 hover:bg-white/5 hover:text-white"
               }`}
             >
-              {item.icon}
-              {isSidebarOpen && <span className="font-medium text-sm">{item.name}</span>}
+              <div className="flex-shrink-0">{item.icon}</div>
+              {isSidebarOpen && <span className="font-medium text-sm whitespace-nowrap">{item.name}</span>}
             </Link>
           ))}
         </nav>
 
-        <div className="pt-6 border-t border-white/5 space-y-2">
-          <button className="w-full flex items-center gap-4 p-3 text-slate-400 hover:text-white transition-colors">
-            <Settings className="w-5 h-5" />
+        <div className="mt-auto pt-6 border-t border-white/5 space-y-1">
+          <button className="w-full flex items-center gap-4 p-3 text-slate-400 hover:text-white transition-colors group">
+            <Settings className="w-5 h-5 group-hover:rotate-45 transition-transform" />
             {isSidebarOpen && <span className="text-sm">الإعدادات</span>}
           </button>
-          <Link href="/" className="w-full flex items-center gap-4 p-3 text-red-400 hover:text-red-300 transition-colors">
+          <Link href="/" className="w-full flex items-center gap-4 p-3 text-red-500/60 hover:text-red-400 transition-colors">
             <LogOut className="w-5 h-5" />
             {isSidebarOpen && <span className="text-sm">خروج</span>}
           </Link>
@@ -87,27 +87,48 @@ export default function DashboardLayout({
       </aside>
 
       {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div className="md:hidden fixed inset-0 bg-black/80 z-40" onClick={() => setIsSidebarOpen(false)} />
-      )}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-50" 
+            onClick={() => setIsSidebarOpen(false)} 
+          />
+        )}
+      </AnimatePresence>
 
       {/* Main Content Area */}
-      <main className={`flex-1 ${isSidebarOpen ? "md:pr-64" : "md:pr-20"} transition-all duration-300 p-4 md:p-8`}>
+      <main className={`flex-1 ${isSidebarOpen ? "md:pr-64" : "md:pr-20"} transition-all duration-500 p-5 md:p-8 pt-6 md:pt-10 overflow-x-hidden w-full`}>
         {/* Top Header */}
-        <header className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold">مرحباً، علي! 👋</h1>
-            <p className="text-sm text-slate-500">المرحلة الثالثة | طالب</p>
+        <header className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+          <div className="space-y-1">
+            <h1 className="text-2xl md:text-3xl font-black tracking-tighter">مرحباً، علي! 👋</h1>
+            <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-widest">Student_ID: 2024_CYB_982 // Phase_03</p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="h-10 w-10 glass-morphism rounded-full flex items-center justify-center border border-primary/20">
-              <Mail className="w-5 h-5 text-primary" />
+          <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto p-4 md:p-0 glass-morphism md:bg-transparent rounded-2xl md:rounded-none border-white/5 md:border-none">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 glass-morphism rounded-full flex items-center justify-center border border-primary/20 hover:border-primary transition-colors cursor-pointer">
+                <Mail className="w-5 h-5 text-primary" />
+              </div>
+              <div className="h-10 w-10 glass-morphism rounded-full flex items-center justify-center border border-secondary/20 hover:border-secondary transition-colors cursor-pointer">
+                <Bell className="w-5 h-5 text-secondary" />
+              </div>
             </div>
-            <div className="h-12 w-12 rounded-2xl bg-slate-800 border border-white/10" />
+            <div className="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/5 border border-white/10">
+               <div className="text-left md:text-right hidden sm:block">
+                  <p className="text-[10px] font-bold text-white leading-none mb-1">علي حسن</p>
+                  <p className="text-[8px] font-mono text-primary uppercase">Active</p>
+               </div>
+               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-white/10" />
+            </div>
           </div>
         </header>
 
-        {children}
+        <div className="max-w-[1600px] mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );
