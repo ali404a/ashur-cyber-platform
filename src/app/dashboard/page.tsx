@@ -40,23 +40,21 @@ export default async function DashboardPage() {
   const cookieStore = await cookies();
   const userPhone = cookieStore.get("user_phone")?.value;
 
-  if (!userPhone) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <Shield className="w-16 h-16 text-slate-800 mb-4" />
-        <h2 className="text-xl font-bold text-slate-500 tracking-tighter">AUTHENTICATION_REQUIRED</h2>
-      </div>
-    );
-  }
-
   // Fetch real subjects for the student
-  let { subjects, success } = await getStudentSubjects(userPhone);
+  let subjects: any[] = [];
+  let success = false;
 
-  // Auto-seed if no data exists (Demo purposes)
-  if (success && subjects.length === 0) {
-    await seedInitialSubjects();
-    const reFetch = await getStudentSubjects(userPhone);
-    subjects = reFetch.subjects;
+  if (userPhone) {
+    const response = await getStudentSubjects(userPhone);
+    subjects = response.subjects;
+    success = response.success;
+
+    // Auto-seed if no data exists (Demo purposes)
+    if (success && subjects.length === 0) {
+      await seedInitialSubjects();
+      const reFetch = await getStudentSubjects(userPhone);
+      subjects = reFetch.subjects;
+    }
   }
 
   return (
@@ -77,43 +75,56 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      {/* Tactical Subject Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
-        {subjects && subjects.map((subject: any) => (
-          <Link 
-            key={subject._id} 
-            href={`/dashboard/subjects/${subject._id}`}
-            className="group"
-          >
-            <div className="hologram-card p-6 md:p-8 rounded-[2rem] border-white/5 hover:border-primary/40 transition-all relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              
-              <div className="absolute top-6 right-8 text-[8px] font-mono text-slate-600 group-hover:text-primary/60 tracking-widest uppercase">
-                {subject.nameEn}
-              </div>
+      {userPhone ? (
+        /* Tactical Subject Grid */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+          {subjects && subjects.map((subject: any) => (
+            <Link 
+              key={subject._id} 
+              href={`/dashboard/subjects/${subject._id}`}
+              className="group"
+            >
+              <div className="hologram-card p-6 md:p-8 rounded-[2rem] border-white/5 hover:border-primary/40 transition-all relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="absolute top-6 right-8 text-[8px] font-mono text-slate-600 group-hover:text-primary/60 tracking-widest uppercase">
+                  {subject.nameEn}
+                </div>
 
-              <div className="mb-6 md:mb-8 p-4 rounded-2xl bg-white/5 w-fit border border-white/5 group-hover:shadow-[0_0_20px_rgba(0,255,65,0.1)] transition-all">
-                <BookOpen className="w-6 h-6 md:w-8 md:h-8 text-primary/80 group-hover:text-primary transition-colors" />
-              </div>
+                <div className="mb-6 md:mb-8 p-4 rounded-2xl bg-white/5 w-fit border border-white/5 group-hover:shadow-[0_0_20px_rgba(0,255,65,0.1)] transition-all">
+                  <BookOpen className="w-6 h-6 md:w-8 md:h-8 text-primary/80 group-hover:text-primary transition-colors" />
+                </div>
 
-              <h3 className="text-xl md:text-2xl font-black mb-3 text-white group-hover:text-primary transition-colors tracking-tighter">
-                {subject.nameAr}
-              </h3>
-              
-              <p className="text-slate-500 text-xs md:text-sm font-medium leading-relaxed mb-8 line-clamp-2">
-                {subject.description || "منهج أكاديمي متخصص في تطبيقات الأمن السيبراني المتقدمة."}
-              </p>
+                <h3 className="text-xl md:text-2xl font-black mb-3 text-white group-hover:text-primary transition-colors tracking-tighter">
+                  {subject.nameAr}
+                </h3>
+                
+                <p className="text-slate-500 text-xs md:text-sm font-medium leading-relaxed mb-8 line-clamp-2">
+                  {subject.description || "منهج أكاديمي متخصص في تطبيقات الأمن السيبراني المتقدمة."}
+                </p>
 
-              <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                <span className="text-[9px] font-mono font-black text-slate-600 uppercase tracking-widest shrink-0">
-                  Status: <span className="text-primary/60 italic">Online</span>
-                </span>
-                <ChevronRight className="w-5 h-5 text-slate-800 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                  <span className="text-[9px] font-mono font-black text-slate-600 uppercase tracking-widest shrink-0">
+                    Status: <span className="text-primary/60 italic">Online</span>
+                  </span>
+                  <ChevronRight className="w-5 h-5 text-slate-800 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="hologram-card p-12 rounded-[2rem] border-dashed border-white/10 flex flex-col items-center justify-center text-center">
+            <Shield className="w-12 h-12 text-slate-700 mb-4" />
+            <p className="text-slate-500 font-mono text-xs uppercase tracking-widest leading-relaxed">
+              {"// Session_Detection_Failed"} <br />
+              {"// Please_Authenticate_To_Load_Subjects"}
+            </p>
+            <Link href="/" className="mt-6 px-8 py-3 bg-primary text-background font-black rounded-xl text-xs hover:scale-105 transition-transform">
+              تسجيل الدخول
+            </Link>
+        </div>
+      )}
 
       {/* News Feed Section - Name - Position Format */}
       <div className="space-y-6 pt-10">

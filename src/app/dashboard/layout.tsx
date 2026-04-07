@@ -100,12 +100,12 @@ export default function DashboardLayout({
       </AnimatePresence>
 
       {/* Main Content Area */}
-      <main className={`flex-1 ${isSidebarOpen ? "md:pr-64" : "md:pr-20"} transition-all duration-500 p-5 md:p-8 pt-6 md:pt-10 overflow-x-hidden w-full`}>
+      <main className={`flex-1 ${isSidebarOpen ? "md:pr-72" : "md:pr-24"} transition-all duration-500 p-5 md:p-10 pt-6 md:pt-10 overflow-x-hidden w-full relative`}>
         {/* Top Header */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
-          <div className="space-y-1">
-            <h1 className="text-2xl md:text-3xl font-black tracking-tighter">مرحباً، علي! 👋</h1>
-            <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-widest">Student_ID: 2024_CYB_982 // Phase_03</p>
+        <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-8">
+          <div className="space-y-1.5 md:mr-4">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-tight">مرحباً، علي! 👋</h1>
+            <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-[0.3em]">Student_ID: 2024_CYB_982 // Phase_03</p>
           </div>
           <div className="flex items-center justify-end gap-4 w-full md:w-auto">
             <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 glass-morphism">

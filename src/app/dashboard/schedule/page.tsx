@@ -129,21 +129,6 @@ export default function SchedulePage() {
         </AnimatePresence>
       </div>
 
-      {/* Quick Stats / Info */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 glass-morphism rounded-3xl border-primary/10">
-          <span className="text-slate-500 text-xs uppercase tracking-widest block mb-2">إجمالي الساعات</span>
-          <span className="text-3xl font-black text-primary">24 ساعة</span>
-        </div>
-        <div className="p-6 glass-morphism rounded-3xl border-secondary/10">
-          <span className="text-slate-500 text-xs uppercase tracking-widest block mb-2">المواد العملية</span>
-          <span className="text-3xl font-black text-secondary">4 مختبرات</span>
-        </div>
-        <div className="p-6 glass-morphism rounded-3xl border-white/10">
-          <span className="text-slate-500 text-xs uppercase tracking-widest block mb-2">نسبة الحضور</span>
-          <span className="text-3xl font-black text-white">92%</span>
-        </div>
-      </div>
     </div>
   );
 }
