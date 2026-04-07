@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  BarChart3, 
   Calendar, 
   FileText, 
+  Shield,
+  ShieldCheck,
+  Zap,
+  LayoutDashboard,
   Bell, 
   Settings, 
   LogOut, 
   Menu, 
   X, 
   Clock,
-  BookOpen,
-  Mail
+  BookOpen
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,14 +26,25 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [userRole, setUserRole] = useState("student");
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Get role from cookie on client
+    const role = document.cookie.split('; ').find(row => row.startsWith('user_role='))?.split('=')[1];
+    if (role) setUserRole(decodeURIComponent(role));
+  }, []);
 
   const menuItems = [
     { name: "المنشورات", icon: <Bell className="w-5 h-5" />, href: "/dashboard" },
     { name: "جدول المحاضرات", icon: <Calendar className="w-5 h-5" />, href: "/dashboard/schedule" },
-    { name: "جدول الامتحانات", icon: <FileText className="w-5 h-5" />, href: "/dashboard/exams" },
-    { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },
     { name: "سشن الدراسة", icon: <Clock className="w-5 h-5" />, href: "/dashboard/study" },
+    // Admin only items
+    ...(userRole === "admin" ? [
+      { name: "مركز القبول", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/dashboard/admin" },
+      { name: "إدارة المحتوى", icon: <Shield className="w-5 h-5 text-secondary" />, href: "/dashboard/manage" },
+    ] : []),
+    { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },
   ];
 
   return (
@@ -86,32 +99,18 @@ export default function DashboardLayout({
         </div>
       </aside>
 
-      {/* Mobile Sidebar Overlay */}
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="md:hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-50" 
-            onClick={() => setIsSidebarOpen(false)} 
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Main Content Area */}
+      {/* Content Area */}
       <main className={`flex-1 ${isSidebarOpen ? "md:pr-72" : "md:pr-24"} transition-all duration-500 p-5 md:p-10 pt-6 md:pt-10 overflow-x-hidden w-full relative`}>
-        {/* Top Header */}
         <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-8">
           <div className="space-y-1.5 md:mr-4">
             <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-tight">مرحباً، علي! 👋</h1>
-            <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-[0.3em]">Student_ID: 2024_CYB_982 // Phase_03</p>
+            <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-[0.3em]">System_Active // Privileged_Node</p>
           </div>
           <div className="flex items-center justify-end gap-4 w-full md:w-auto">
             <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 glass-morphism">
                <div className="text-right">
                   <p className="text-xs font-black text-white leading-none mb-1">علي حسن</p>
-                  <p className="text-[8px] font-mono text-primary uppercase tracking-widest">System_Active</p>
+                  <p className="text-[8px] font-mono text-primary uppercase tracking-widest">{userRole.toUpperCase()}_AUTHORITY</p>
                </div>
                <div className="h-8 w-8 rounded-lg bg-primary/20 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs">
                   CY
@@ -124,6 +123,19 @@ export default function DashboardLayout({
           {children}
         </div>
       </main>
+
+      {/* Mobile Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-50" 
+            onClick={() => setIsSidebarOpen(false)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

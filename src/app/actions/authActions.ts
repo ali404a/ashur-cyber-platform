@@ -72,3 +72,44 @@ export async function loginStudent(formData: FormData) {
     return { success: false, message: "حدث خطأ أثناء تسجيل الدخول" };
   }
 }
+
+/**
+ * Specialized login for Staff (Admin/Management)
+ */
+export async function loginStaff(formData: FormData) {
+  try {
+    await connectDB();
+
+    const phoneNumber = formData.get("phone") as string;
+    const password = formData.get("password") as string;
+
+    const user = await User.findOne({ phoneNumber });
+    if (!user) {
+      return { success: false, message: "بيانات الدخول غير صحيحة" };
+    }
+
+    // Critical Check: Only STAFF allowed
+    if (user.role !== "admin" && user.role !== "management") {
+      return { success: false, message: "عذراً، هذا المسار مخصص للمخولين فقط." };
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return { success: false, message: "بيانات الدخول غير صحيحة" };
+    }
+
+    // Set official staff cookies
+    const { cookies } = await import("next/headers");
+    (await cookies()).set("user_phone", user.phoneNumber, { httpOnly: true, secure: true });
+    (await cookies()).set("user_role", user.role, { httpOnly: true, secure: true });
+
+    return { 
+      success: true, 
+      message: "تم التحقق.. جاري الدخول لمركز القيادة 🛡️",
+      role: user.role 
+    };
+  } catch (error: any) {
+    console.error("Staff login error:", error);
+    return { success: false, message: "فشل الدخول للمسار الإداري" };
+  }
+}
