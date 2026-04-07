@@ -1,15 +1,16 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&family=Outfit:wght@200;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&family=Outfit:wght@200;400;700;900&family=JetBrains+Mono:ital,wght@0,100;0,400;1,100;1,400&display=swap');
 
 :root {
   --background: #020617;
   --foreground: #f8fafc;
-  --primary: #00FF41; /* Matrix Green */
-  --secondary: #00E5FF; /* Tech Blue */
-  --accent: #1e293b;
-  --card-bg: rgba(15, 23, 42, 0.4); /* More subtle card background */
+  --primary: #00FF41; 
+  --secondary: #00E5FF;
+  --accent: #FF3D3D; /* Alert/Warning Red */
+  --card-bg: rgba(7, 16, 41, 0.4);
   --font-arabic: 'Cairo', sans-serif;
   --font-english: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 @theme inline {
@@ -21,7 +22,7 @@
   --color-card-bg: var(--card-bg);
   --font-sans: var(--font-english);
   --font-arabic: var(--font-arabic);
-  --font-mono: var(--font-inter-mono);
+  --font-mono: var(--font-mono);
 }
 
 body {
@@ -30,53 +31,95 @@ body {
   font-family: var(--font-arabic);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  cursor: crosshair; /* Tactical feel */
 }
 
-/* Custom Utilities */
-.cyber-grid {
+/* Legendary Grid & Texture */
+.legendary-grid {
   background-image: 
-    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(circle at center, black, transparent 90%);
+    linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(circle at center, black, transparent 95%);
 }
 
-.glass-morphism {
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.4);
+.sub-grid {
+  background-image: 
+    linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.neon-border {
-  box-shadow: 0 0 12px rgba(0, 255, 65, 0.15), inset 0 0 6px rgba(0, 255, 65, 0.1);
-  border: 1px solid rgba(0, 255, 65, 0.3);
+/* Holographic Glass */
+.hologram-card {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.05), rgba(0, 255, 65, 0.05));
+  backdrop-filter: blur(25px) saturate(200%);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  box-shadow: 0 0 40px -10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
 }
 
-.neon-text {
-  text-shadow: 0 0 8px rgba(0, 255, 65, 0.5); /* Sharper neon */
-}
-
-.nebula-glow {
-  filter: blur(100px);
-  opacity: 0.35;
-  mix-blend-mode: color-dodge;
-  pointer-events: none;
-}
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-.scanline::after {
+.hologram-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.05), transparent);
-  height: 2px;
+  top: 0;
+  left: 0;
   width: 100%;
-  animation: scanline 6s linear infinite;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+  animation: scan-horizontal 3s linear infinite;
+}
+
+@keyframes scan-horizontal {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Tactical HUD Borders */
+.tech-border {
+  position: relative;
+}
+.tech-border::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--secondary);
+  border-right: 2px solid var(--secondary);
+}
+.tech-border::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: -2px;
+  width: 20px;
+  height: 20px;
+  border-bottom: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+}
+
+.neon-text-cyan {
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(0, 229, 255, 0.3);
+}
+
+.neon-text-green {
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5), 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+/* Cinematic Data Stream Overlay */
+.data-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 229, 255, 0.03) 0px,
+    rgba(0, 229, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
 }
 
 
