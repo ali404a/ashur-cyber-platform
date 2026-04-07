@@ -21,8 +21,8 @@ const PostSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ["important", "info", "event"],
-      default: "info",
+      enum: ["general", "exam", "lecture", "assignment"],
+      default: "general",
     },
     dateDisplay: {
       type: String,

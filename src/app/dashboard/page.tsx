@@ -1,17 +1,15 @@
 import React from "react";
 import { 
-  Zap, 
-  ArrowRight, 
-  ChevronRight, 
-  BookOpen, 
   MessageSquare, 
   Clock, 
   User as UserIcon,
-  Calendar
+  Calendar,
+  Megaphone,
+  AlertTriangle,
+  MonitorPlay,
+  ClipboardList
 } from "lucide-react";
-import Link from "next/link";
 import { cookies } from "next/headers";
-import { getStudentSubjects, seedInitialSubjects } from "@/app/actions/academicActions";
 import { getLatestPosts } from "@/app/actions/managementActions";
 
 export default async function DashboardPage() {
@@ -35,154 +33,146 @@ export default async function DashboardPage() {
   const displayPosts = (dynamicPosts && dynamicPosts.length > 0) ? dynamicPosts : [
     {
       _id: "demo1",
-      title: "تحديث: موعد الاختبار المركزي",
+      title: "موعد الاختبار النهائي لمادة التشفير",
       author: "أ.د. علي حسن",
       position: "عميد الكلية",
-      content: "تم تحديد موعد الاختبار المركزي لمواد الأمن السيبراني للمرحلة الثالثة يوم الخميس القادم. يرجى مراجعة المختبرات.",
+      content: "نحيطكم علماً بأن الاختبار النهائي لمادة أنظمة التشفير سيكون يوم الخميس القادم في المختبر المركزي. يرجى الالتزام بالوقت والمكان المحدد.",
       createdAt: new Date().toISOString(),
-      type: "important"
+      type: "exam"
+    },
+    {
+      _id: "demo2",
+      title: "محاضرة إضافية عن الأمن السيبراني",
+      author: "أ. محمد ناصر",
+      position: "أستاذ المادة",
+      content: "تعلن الكلية عن إقامة محاضرة إضافية متخصصة في تحليل الثغرات المتقدمة يوم غدٍ الثلاثاء في تمام الساعة العاشرة صباحاً.",
+      createdAt: new Date().toISOString(),
+      type: "lecture"
     }
   ];
 
-  // Fetch subjects - No more blocking UI logic
-  let subjects: any[] = [];
-  try {
-    const response = await getStudentSubjects(userPhone || "demo"); 
-    subjects = response.subjects || [];
-
-    // Auto-seed if no data exists
-    if (subjects.length === 0) {
-      await seedInitialSubjects();
-      const reFetch = await getStudentSubjects(userPhone || "demo");
-      subjects = reFetch.subjects || [];
+  // Template Mapping Logic
+  const getTemplateTheme = (type: string) => {
+    switch(type) {
+      case 'exam':
+        return { 
+          icon: <AlertTriangle className="w-8 h-8 text-red-500" />, 
+          color: "border-red-500/30 bg-red-500/[0.02]", 
+          label: "🚨 تبليغ امتحان (Exam Alert)",
+          badge: "bg-red-500 text-white",
+          glow: "shadow-[0_0_30px_rgba(239,68,68,0.15)]"
+        };
+      case 'lecture':
+        return { 
+          icon: <MonitorPlay className="w-8 h-8 text-primary" />, 
+          color: "border-primary/30 bg-primary/[0.02]", 
+          label: "🎓 تبليغ محاضرة (Lecture)",
+          badge: "bg-primary text-background",
+          glow: "shadow-[0_0_30px_rgba(0,255,65,0.15)]"
+        };
+      case 'assignment':
+        return { 
+          icon: <ClipboardList className="w-8 h-8 text-yellow-500" />, 
+          color: "border-yellow-500/30 bg-yellow-500/[0.02]", 
+          label: "📌 تبليغ واجبات (Task)",
+          badge: "bg-yellow-500 text-black",
+          glow: "shadow-[0_0_30px_rgba(234,179,8,0.15)]"
+        };
+      default:
+        return { 
+          icon: <Megaphone className="w-8 h-8 text-blue-500" />, 
+          color: "border-blue-500/30 bg-blue-500/[0.02]", 
+          label: "📢 تبليغ عام (General)",
+          badge: "bg-blue-500 text-white",
+          glow: "shadow-[0_0_30px_rgba(59,130,246,0.15)]"
+        };
     }
-  } catch (err) {
-    console.error("Failed to load subjects");
-  }
+  };
 
   return (
     <div className="space-y-12 pb-20">
-      {/* Subject Access Header */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="space-y-1">
-          <h2 className="text-xl md:text-3xl font-black flex items-center gap-3 tracking-tighter text-white">
-            <Zap className="w-6 h-6 text-primary shadow-[0_0_15px_rgba(0,255,65,0.3)]" />
-            المواد النشطة
-          </h2>
-          <p className="text-[10px] text-slate-500 font-mono uppercase tracking-[0.4em]">Active_Tactical_Modules</p>
-        </div>
-        
-        <Link href="/dashboard/files" className="text-xs font-black text-primary hover:bg-primary hover:text-background transition-all flex items-center gap-2 bg-primary/10 px-6 py-3 rounded-2xl border border-primary/20">
-           المكتبة
-           <ArrowRight className="w-4 h-4" />
-        </Link>
+      {/* Page Command Header */}
+      <div className="space-y-1">
+        <h1 className="text-3xl md:text-5xl font-black flex items-center gap-4 tracking-tighter text-white uppercase italic">
+          <MessageSquare className="w-10 h-10 text-primary shadow-[0_0_20px_rgba(0,255,65,0.4)]" />
+          مركز التبليغات الموحد
+        </h1>
+        <p className="text-[10px] md:text-xs text-slate-500 font-mono uppercase tracking-[0.5em] pl-2">
+          Integrated_Communications_Core // Phase_IV
+        </p>
       </div>
 
-      {/* Tactical Subject Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-        {subjects.map((subject: any) => (
-          <Link 
-            key={subject._id} 
-            href={`/dashboard/subjects/${subject._id}`}
-            className="group"
-          >
-            <div className="glass-morphism p-8 md:p-10 rounded-[3rem] border-white/5 hover:border-primary/30 transition-all relative overflow-hidden group shadow-2xl bg-gradient-to-br from-white/[0.02] to-transparent">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              <div className="absolute top-8 right-10 text-[9px] font-mono text-slate-600 group-hover:text-primary/60 tracking-[0.3em] uppercase">
-                {subject.nameEn}
+      {/* High-Fidelity News Feed Section */}
+      <div className="space-y-10">
+        <div className="grid grid-cols-1 last:mb-0 gap-10">
+          {displayPosts.map((post: any) => {
+            const theme = getTemplateTheme(post.type);
+            return (
+              <div 
+                key={post._id}
+                className={`glass-morphism p-8 md:p-12 rounded-[4rem] border transition-all flex flex-col relative overflow-hidden group shadow-2xl ${theme.color} ${theme.glow}`}
+              >
+                 {/* Visual Template Indicator */}
+                 <div className={`absolute top-0 right-0 w-2 h-full opacity-60 group-hover:opacity-100 transition-opacity ${theme.badge.split(' ')[0]}`} />
+                 
+                 {/* Header: Template Tag & Date */}
+                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                    <div className="flex items-center gap-4">
+                       <div className="w-20 h-20 rounded-[2.2rem] bg-white/5 border border-white/10 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500">
+                          {theme.icon}
+                       </div>
+                       <div className="space-y-1">
+                          <span className={`text-[10px] md:text-xs font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full border border-white/5 bg-white/5 text-slate-400`}>
+                             Bulletin_Type: {post.type.toUpperCase()}
+                          </span>
+                          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tighter italic">
+                             {theme.label}
+                          </h2>
+                       </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 bg-white/5 px-6 py-3 rounded-2xl border border-white/10 w-fit self-end md:self-auto">
+                       <Calendar className="w-4 h-4 text-slate-500" />
+                       <span className="text-[11px] font-black text-slate-400 font-mono tracking-widest">{formatDate(post.createdAt)}</span>
+                    </div>
+                 </div>
+
+                 {/* Author Identity Shield */}
+                 <div className="flex items-center gap-5 mb-10 p-5 rounded-3xl bg-white/[0.02] border border-white/5 w-fit">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-slate-500">
+                       <UserIcon className="w-6 h-6" />
+                    </div>
+                    <div>
+                       <p className="text-[10px] text-primary font-black uppercase tracking-[0.3em] italic mb-1">{post.position}</p>
+                       <h4 className="text-xl font-black text-white tracking-tight">{post.author}</h4>
+                    </div>
+                 </div>
+
+                 {/* Notice Contents */}
+                 <div className="space-y-6 mb-12">
+                    <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight">
+                       {post.title}
+                    </h3>
+                    <p className="text-lg text-slate-400 leading-relaxed font-medium opacity-90 max-w-5xl">
+                       {post.content}
+                    </p>
+                 </div>
+
+                 {/* Tactical Footer */}
+                 <div className="flex items-center justify-between mt-auto pt-8 border-t border-white/5">
+                    <div className="flex items-center gap-4">
+                       <div className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${theme.badge}`}>
+                          ACTIVE // PRIORITY
+                       </div>
+                    </div>
+                    
+                    <div className="text-[10px] font-mono text-slate-700 uppercase tracking-[0.4em] font-black group-hover:text-slate-500 transition-colors">
+                      AUTH_ID: #{(String(post._id)).substring(0,10).toUpperCase()}
+                    </div>
+                 </div>
               </div>
-
-              <div className="mb-8 md:mb-10 p-5 rounded-3xl bg-white/5 w-fit border border-white/5 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
-                <BookOpen className="w-8 h-8 text-primary shadow-inner" />
-              </div>
-
-              <h3 className="text-2xl md:text-3xl font-black mb-4 text-white group-hover:text-primary transition-colors tracking-tighter leading-tight italic">
-                {subject.nameAr}
-              </h3>
-              
-              <p className="text-slate-400 text-sm md:text-md font-medium leading-relaxed mb-10 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
-                {subject.description || "منهج أكاديمي متخصص في تطبيقات الأمن السيبراني المتقدمة."}
-              </p>
-
-              <div className="flex items-center justify-between pt-8 border-t border-white/5">
-                <div className="flex items-center gap-3">
-                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                   <span className="text-[10px] font-mono font-black text-slate-500 uppercase tracking-widest">
-                     STATUS: <span className="text-primary italic">SECURE</span>
-                   </span>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary transition-all">
-                  <ChevronRight className="w-5 h-5 text-slate-600 group-hover:text-background transition-colors" />
-                </div>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* News Feed Section */}
-      <div className="space-y-8 pt-10">
-        <div className="space-y-1">
-          <h2 className="text-xl md:text-3xl font-black flex items-center gap-3 tracking-tighter text-white">
-            <MessageSquare className="w-6 h-6 text-secondary shadow-[0_0_15px_rgba(30,144,255,0.3)]" />
-            أحدث المنشورات
-          </h2>
-          <p className="text-[10px] text-slate-500 font-mono uppercase tracking-[0.4em]">Latest_Command_Bulletins</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {displayPosts.map((post: any) => (
-            <div 
-              key={post._id}
-              className="glass-morphism p-8 md:p-10 rounded-[3.5rem] border-white/5 hover:border-secondary/30 transition-all flex flex-col relative overflow-hidden group shadow-2xl bg-gradient-to-bl from-white/[0.01] to-transparent"
-            >
-               {/* Vertical Status Indicator */}
-               <div className={`absolute top-0 right-0 w-1.5 h-full ${post.type === 'important' ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-secondary shadow-[0_0_15px_rgba(30,144,255,0.5)]'} opacity-50 group-hover:opacity-100 transition-opacity`} />
-
-               <div className="flex items-start justify-between mb-10">
-                  <div className="flex items-center gap-5">
-                     <div className="w-16 h-16 rounded-[1.8rem] bg-white/5 border border-white/10 flex items-center justify-center text-secondary group-hover:shadow-[0_0_20px_rgba(30,144,255,0.2)] transition-all duration-500">
-                        <UserIcon className="w-8 h-8" />
-                     </div>
-                     <div>
-                        <h4 className="text-lg font-black text-white group-hover:text-secondary transition-colors tracking-tight">{post.author}</h4>
-                        <p className="text-[11px] text-slate-500 font-black uppercase tracking-widest italic">{post.position}</p>
-                     </div>
-                  </div>
-                  
-                  {/* Date Display */}
-                  <div className="hidden sm:flex items-center gap-3 bg-white/5 px-5 py-2.5 rounded-2xl border border-white/10">
-                     <Calendar className="w-3.5 h-3.5 text-secondary" />
-                     <span className="text-[10px] font-black text-slate-400 font-mono">{formatDate(post.createdAt)}</span>
-                  </div>
-               </div>
-
-               <h3 className="text-xl md:text-2xl font-black mb-6 text-white tracking-tighter leading-tight italic">
-                  {post.title}
-               </h3>
-               
-               <p className="text-md text-slate-400 leading-relaxed mb-10 font-medium opacity-90">
-                  {post.content}
-               </p>
-
-               <div className="flex items-center justify-between mt-auto pt-8 border-t border-white/5">
-                  <div className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest ${post.type === 'important' ? 'text-red-500' : 'text-secondary'}`}>
-                    <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${post.type === 'important' ? 'bg-red-500' : 'bg-secondary'}`} />
-                    {post.type}
-                  </div>
-                  
-                  {/* Mobile Date */}
-                  <div className="sm:hidden text-[9px] font-mono text-slate-600 font-black">
-                    {formatDate(post.createdAt)}
-                  </div>
-
-                  <div className="text-[10px] font-mono text-slate-800 uppercase tracking-[0.3em] font-black group-hover:text-slate-600 transition-colors">
-                    REF_ID: #{(String(post._id)).substring(0,8).toUpperCase()}
-                  </div>
-               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

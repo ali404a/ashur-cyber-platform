@@ -57,12 +57,13 @@ export default function AddPostForm() {
             </div>
          </div>
 
-         <div className="space-y-1.5">
-            <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest block pr-2">Event_Type</label>
+          <div className="space-y-1.5">
+            <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest block pr-2">Bulletin_Template</label>
             <select name="type" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm focus:border-primary outline-none transition-all text-slate-300 appearance-none">
-               <option value="info">إبلاغ عام (Info)</option>
-               <option value="important">تنبيه هام (Important)</option>
-               <option value="event">حدث أكاديمي (Event)</option>
+               <option value="general">📢 تبليغ عام (General)</option>
+               <option value="exam">🚨 تبليغ امتحان (Exam)</option>
+               <option value="lecture">🎓 تبليغ محاضرة (Lecture)</option>
+               <option value="assignment">📌 تبليغ واجبات (Assignment)</option>
             </select>
          </div>
 
