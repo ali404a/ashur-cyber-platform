@@ -3,12 +3,17 @@
 import React, { useState, useEffect } from "react";
 import { ShieldAlert, Menu, X, LogIn, Cpu } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import DataStream from "@/components/DataStream";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Hide Navbar on dashboard routes
+  if (pathname?.startsWith("/dashboard")) return null;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);

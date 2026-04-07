@@ -48,7 +48,7 @@ export default function DashboardLayout({
       <aside
         className={`${
           isSidebarOpen ? "w-64" : "w-20"
-        } transition-all duration-300 glass-morphism border-r border-white/5 flex flex-col p-4 fixed h-full z-40 hidden md:flex`}
+        } transition-all duration-300 glass-morphism border-l border-white/5 flex flex-col p-4 fixed right-0 h-full z-40 hidden md:flex`}
       >
         <div className="mb-10 flex items-center gap-3 px-2">
           <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-black text-background">
@@ -69,7 +69,7 @@ export default function DashboardLayout({
               }`}
             >
               {item.icon}
-              {isSidebarOpen && <span className="font-medium">{item.name}</span>}
+              {isSidebarOpen && <span className="font-medium text-sm">{item.name}</span>}
             </Link>
           ))}
         </nav>
@@ -77,22 +77,22 @@ export default function DashboardLayout({
         <div className="pt-6 border-t border-white/5 space-y-2">
           <button className="w-full flex items-center gap-4 p-3 text-slate-400 hover:text-white transition-colors">
             <Settings className="w-5 h-5" />
-            {isSidebarOpen && <span>الإعدادات</span>}
+            {isSidebarOpen && <span className="text-sm">الإعدادات</span>}
           </button>
           <Link href="/" className="w-full flex items-center gap-4 p-3 text-red-400 hover:text-red-300 transition-colors">
             <LogOut className="w-5 h-5" />
-            {isSidebarOpen && <span>خروج</span>}
+            {isSidebarOpen && <span className="text-sm">خروج</span>}
           </Link>
         </div>
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div className="md:hidden fixed inset-0 bg-black/50 z-40" onClick={() => setIsSidebarOpen(false)} />
+        <div className="md:hidden fixed inset-0 bg-black/80 z-40" onClick={() => setIsSidebarOpen(false)} />
       )}
 
       {/* Main Content Area */}
-      <main className={`flex-1 md:mr-${isSidebarOpen ? "64" : "20"} transition-all duration-300 p-4 md:p-8`}>
+      <main className={`flex-1 ${isSidebarOpen ? "md:pr-64" : "md:pr-20"} transition-all duration-300 p-4 md:p-8`}>
         {/* Top Header */}
         <header className="flex items-center justify-between mb-8">
           <div>
