@@ -39,3 +39,36 @@ export async function registerStudent(formData: FormData) {
     return { success: false, message: "فشل إرسال الطلب، حاول مرة أخرى" };
   }
 }
+
+export async function loginStudent(formData: FormData) {
+  try {
+    await connectDB();
+
+    const phoneNumber = formData.get("phone") as string;
+    const password = formData.get("password") as string;
+
+    const user = await User.findOne({ phoneNumber });
+    if (!user) {
+      return { success: false, message: "رقم الهاتف أو كلمة المرور غير صحيحة" };
+    }
+
+    if (user.status !== "approved") {
+      return { success: false, message: "حسابك بانتظار موافقة الإدارة. يرجى المحاولة لاحقاً." };
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return { success: false, message: "رقم الهاتف أو كلمة المرور غير صحيحة" };
+    }
+
+    // In a real app, use NextAuth or JWT. For now, we'll set a cookie manually.
+    const { cookies } = await import("next/headers");
+    (await cookies()).set("user_phone", user.phoneNumber, { httpOnly: true, secure: true });
+    (await cookies()).set("user_role", user.role, { httpOnly: true, secure: true });
+
+    return { success: true, message: "تم تسجيل الدخول بنجاح!" };
+  } catch (error: any) {
+    console.error("Login error:", error);
+    return { success: false, message: "حدث خطأ أثناء تسجيل الدخول" };
+  }
+}

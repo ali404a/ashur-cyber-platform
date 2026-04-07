@@ -14,15 +14,30 @@ import {
 import Link from "next/link";
 
 export default function LoginPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     phone: "",
     password: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("سيتم تسجيل الدخول بعد التحقق من الصلاحيات.");
+    setIsLoading(true);
+    
+    const { loginStudent } = await import("@/app/actions/authActions");
+    const data = new FormData();
+    data.append("phone", formData.phone);
+    data.append("password", formData.password);
+    
+    const res = await loginStudent(data);
+    setIsLoading(false);
+
+    if (res.success) {
+      window.location.href = "/dashboard";
+    } else {
+      alert(res.message);
+    }
   };
 
   const handleForgotPassword = () => {
