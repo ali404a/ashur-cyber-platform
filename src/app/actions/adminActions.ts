@@ -81,13 +81,19 @@ export async function createStaffAccount(formData: FormData) {
   try {
     await dbConnect();
     
-    const fullName = formData.get("fullName") as string;
+    const academicTitle = formData.get("academicTitle") as string;
+    const rawName = formData.get("fullName") as string;
+    const fullName = `${academicTitle} ${rawName}`.trim();
     const phoneNumber = formData.get("phoneNumber") as string;
     const password = formData.get("password") as string;
     const position = formData.get("position") as string;
     const role = formData.get("role") as "admin" | "management";
 
-    // Hash the staff password
+    const existing = await User.findOne({ phoneNumber });
+    if (existing) {
+      return { success: false, error: "رقم الهاتف مسجل مسبقاً في النظام" };
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
@@ -96,7 +102,7 @@ export async function createStaffAccount(formData: FormData) {
       password: hashedPassword,
       position,
       role,
-      status: "approved", // Staff created by admin are auto-approved
+      status: "approved",
     });
 
     await newUser.save();
@@ -104,6 +110,6 @@ export async function createStaffAccount(formData: FormData) {
     return { success: true, message: `تم تفعيل حساب (${fullName}) بنجاح 🛡️` };
   } catch (error: any) {
     console.error("Staff creation error:", error);
-    return { success: false, error: "فشل إنشاء الحساب، قد يكون الرقم مسجل مسبقاً" };
+    return { success: false, error: "فشل إنشاء الحساب، حاول مرة أخرى" };
   }
 }
