@@ -5,16 +5,29 @@ import { getUsersByStatus, upgradeToAdmin } from "@/app/actions/adminActions";
 import UserApprovalList from "@/components/admin/UserApprovalList";
 import AddStaffForm from "@/components/admin/AddStaffForm";
 import AdminTabs from "@/components/admin/AdminTabs";
+import dbConnect from "@/lib/db";
+import User from "@/models/User";
 
 export default async function AdminPortalPage() {
   const cookieStore = await cookies();
   const userPhone = cookieStore.get("user_phone")?.value;
-  const userRole = cookieStore.get("user_role")?.value;
 
+  // Must have a phone cookie at minimum
   if (!userPhone) redirect("/staff");
-  if (userRole !== "admin") redirect("/staff");
-  
-  await upgradeToAdmin(userPhone);
+
+  // Verify directly from DB — don't trust cookie alone
+  await dbConnect();
+  const dbUser = await User.findOne({ phoneNumber: userPhone }).lean() as any;
+
+  if (!dbUser || dbUser.role !== "admin") redirect("/staff");
+
+  // Sync cookie if it was stale
+  cookieStore.set("user_role", "admin", {
+    httpOnly: true,
+    secure: true,
+    maxAge: 30 * 24 * 60 * 60,
+    path: "/",
+  });
 
   const { users: pendingUsers } = await getUsersByStatus("pending");
   const { users: approvedUsers } = await getUsersByStatus("approved");
