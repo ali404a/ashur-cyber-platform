@@ -59,11 +59,11 @@ export default function NebulaSlider() {
           </motion.div>
           
           <div className="space-y-1">
-             <h2 className="text-3xl font-black tracking-tight text-white flex items-center justify-center gap-3">
+             <h2 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center justify-center gap-3">
               {slides[index].title}
-              <span className="text-2xl">{slides[index].emoji}</span>
+              <span className="text-lg opacity-80">{slides[index].emoji}</span>
             </h2>
-            <p className="text-slate-400 font-medium text-lg">
+            <p className="text-slate-500 font-medium text-sm md:text-base">
               {slides[index].subtitle}
             </p>
           </div>

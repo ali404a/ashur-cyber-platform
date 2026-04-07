@@ -45,23 +45,28 @@ export default function LandingPage() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="text-6xl md:text-9xl font-black mb-8 tracking-tighter leading-tight"
+            className="text-5xl md:text-7xl font-light mb-4 tracking-tight leading-tight text-white/90"
           >
-            هندسة <span className="text-primary neon-text">الأمن</span> <br /> 
-            <span className="text-secondary neon-text drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]">السيبراني</span>
+            هندسة <span className="font-black text-primary neon-text tracking-tighter">الأمن السيبراني</span>
           </motion.h1>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="text-slate-400 text-lg md:text-2xl max-w-3xl mx-auto mb-14 leading-relaxed font-medium"
+            className="flex flex-col items-center gap-4 mb-14"
           >
-            نحن نعد الجيل القادم من مهندسي الأمن السيبراني لمواجهة التحديات الرقمية المعاصرة وحماية البنية التحتية المعلوماتية. 🛡️✨
-          </motion.p>
+            <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+              نعد الجيل القادم من المهندسين لمواجهة التحديات الرقمية المعاصرة وحماية البنية التحتية المعلوماتية.
+            </p>
+            <div className="flex items-center gap-2 text-primary/60 text-sm font-mono tracking-widest">
+              <ShieldCheck className="w-4 h-4" />
+              <span>SECURE_CORE_v2.0</span>
+            </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Outfit:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&family=Outfit:wght@200;400;700;900&display=swap');
 
 :root {
   --background: #020617;
@@ -7,7 +7,7 @@
   --primary: #00FF41; /* Matrix Green */
   --secondary: #00E5FF; /* Tech Blue */
   --accent: #1e293b;
-  --card-bg: rgba(15, 23, 42, 0.8);
+  --card-bg: rgba(15, 23, 42, 0.4); /* More subtle card background */
   --font-arabic: 'Cairo', sans-serif;
   --font-english: 'Outfit', sans-serif;
 }
@@ -29,37 +29,38 @@ body {
   color: var(--foreground);
   font-family: var(--font-arabic);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Custom Utilities */
 .cyber-grid {
   background-image: 
-    linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(circle at center, black, transparent 80%);
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at center, black, transparent 90%);
 }
 
 .glass-morphism {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.4);
 }
 
 .neon-border {
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2), inset 0 0 8px rgba(0, 255, 65, 0.1);
-  border: 1px solid rgba(0, 255, 65, 0.4);
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.15), inset 0 0 6px rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
 }
 
 .neon-text {
-  text-shadow: 0 0 12px var(--primary);
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.5); /* Sharper neon */
 }
 
 .nebula-glow {
-  filter: blur(80px);
-  opacity: 0.4;
-  mix-blend-mode: screen;
+  filter: blur(100px);
+  opacity: 0.35;
+  mix-blend-mode: color-dodge;
   pointer-events: none;
 }
 
@@ -72,9 +73,10 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.1), transparent);
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.05), transparent);
   height: 2px;
   width: 100%;
-  animation: scanline 4s linear infinite;
+  animation: scanline 6s linear infinite;
 }
+
 
