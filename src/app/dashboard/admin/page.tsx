@@ -7,7 +7,8 @@ import {
   ShieldQuestion,
   Search,
   Layout,
-  LayoutDashboard
+  LayoutDashboard,
+  Activity
 } from "lucide-react";
 import { getUsersByStatus, upgradeToAdmin } from "@/app/actions/adminActions";
 import UserApprovalList from "@/components/admin/UserApprovalList";
@@ -19,8 +20,7 @@ export default async function AdminPortalPage() {
   // Simple auth check
   if (!userPhone) redirect("/");
   
-  // Auto-upgrade your account to Admin for first entry (Optional but useful for you)
-  // Using the number provided in previous contexts or assuming current user is admin for demo
+  // Auto-upgrade your account to Admin for first entry
   await upgradeToAdmin(userPhone);
 
   const { users: pendingUsers } = await getUsersByStatus("pending");
@@ -30,68 +30,70 @@ export default async function AdminPortalPage() {
   const totalUsers = (pendingUsers?.length || 0) + (approvedUsers?.length || 0) + (rejectedUsers?.length || 0);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-12 pb-20 px-4">
-      {/* Admin Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-1.5">
-          <h1 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight flex items-center gap-4 text-white">
-             <ShieldCheck className="w-8 h-8 text-primary shadow-[0_0_20px_rgba(0,255,65,0.4)]" />
-             مركز عمليات الموافقة
+    <div className="max-w-6xl mx-auto space-y-10 pb-20 px-4 font-arabic">
+      {/* Admin Command Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-10">
+        <div className="space-y-1.5 text-right">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight flex items-center gap-4 text-white uppercase italic">
+             <ShieldCheck className="w-10 h-10 text-primary shadow-[0_0_20px_rgba(0,255,65,0.4)]" />
+             مركز عمليات القبول
           </h1>
-          <p className="text-[10px] md:text-xs text-slate-500 font-mono uppercase tracking-[0.4em]">
+          <p className="text-[10px] md:text-xs text-slate-500 font-mono uppercase tracking-[0.4em] pr-1">
              System_Verification_Hub // Admin_Control_Node
           </p>
         </div>
-        <div className="flex items-center gap-3 bg-primary/10 px-6 py-3 rounded-2xl border border-primary/20 w-fit">
-           <ShieldCheck className="w-5 h-5 text-primary" />
-           <span className="text-xs font-black text-primary uppercase tracking-widest">Global_Admin_Protocol</span>
+        <div className="flex items-center gap-3 bg-white/5 px-6 py-3 rounded-2xl border border-white/10 w-fit backdrop-blur-xl">
+           <Activity className="w-4 h-4 text-primary animate-pulse" />
+           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Global_Admin_Protocol_v4.0</span>
         </div>
       </div>
 
-      {/* Stats Dashboard */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-         <div className="glass-morphism p-6 rounded-[2rem] border-white/5 flex flex-col gap-2">
-            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Total_Registrations</span>
-            <span className="text-3xl font-black text-white">{totalUsers}</span>
+      {/* Stats Command Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+         <div className="glass-morphism p-5 rounded-[1.8rem] border-white/5 flex flex-col gap-1 transition-all hover:bg-white/[0.03]">
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest block mb-1">إجمالي المسجلين</span>
+            <span className="text-3xl font-black text-white italic">{totalUsers}</span>
          </div>
-         <div className="glass-morphism p-6 rounded-[2rem] border-yellow-500/20 bg-yellow-500/[0.02] flex flex-col gap-2">
-            <span className="text-[10px] font-black text-yellow-600/60 uppercase tracking-widest">Pending_Approval</span>
-            <span className="text-3xl font-black text-yellow-500">{pendingUsers?.length || 0}</span>
+         <div className="glass-morphism p-5 rounded-[1.8rem] border-yellow-500/20 bg-yellow-500/[0.01] flex flex-col gap-1">
+            <span className="text-[9px] font-black text-yellow-600/60 uppercase tracking-widest block mb-1">بانتظار الموافقة</span>
+            <span className="text-3xl font-black text-yellow-500 italic">{pendingUsers?.length || 0}</span>
          </div>
-         <div className="glass-morphism p-6 rounded-[2rem] border-primary/20 bg-primary/[0.02] flex flex-col gap-2">
-            <span className="text-[10px] font-black text-primary/60 uppercase tracking-widest">Verified_Students</span>
-            <span className="text-3xl font-black text-primary">{approvedUsers?.length || 0}</span>
+         <div className="glass-morphism p-5 rounded-[1.8rem] border-primary/20 bg-primary/[0.01] flex flex-col gap-1">
+            <span className="text-[9px] font-black text-primary/60 uppercase tracking-widest block mb-1">طلاب تم تفعيلهم</span>
+            <span className="text-3xl font-black text-primary italic">{approvedUsers?.length || 0}</span>
          </div>
-         <div className="glass-morphism p-6 rounded-[2rem] border-red-500/20 bg-red-500/[0.02] flex flex-col gap-2">
-            <span className="text-[10px] font-black text-red-600/60 uppercase tracking-widest">Rejected_Signals</span>
-            <span className="text-3xl font-black text-red-500">{rejectedUsers?.length || 0}</span>
+         <div className="glass-morphism p-5 rounded-[1.8rem] border-red-500/20 bg-red-500/[0.01] flex flex-col gap-1">
+            <span className="text-[9px] font-black text-red-600/60 uppercase tracking-widest block mb-1">طلبات مرفوضة</span>
+            <span className="text-3xl font-black text-red-500 italic">{rejectedUsers?.length || 0}</span>
          </div>
       </div>
 
       {/* Pending Queue Section */}
       <div className="space-y-6">
         <div className="flex items-center justify-between px-2">
-           <h2 className="text-2xl font-black tracking-tighter flex items-center gap-3">
-              <ShieldQuestion className="w-6 h-6 text-yellow-500" />
-              قائمة الطلاب الجدد (Pending)
-           </h2>
-           <span className="text-[10px] font-mono text-slate-600 uppercase">Verification_Queue</span>
+           <div className="flex items-center gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-ping" />
+              <h2 className="text-xl md:text-2xl font-black tracking-tighter flex items-center gap-3 text-white italic">
+                 طابور التحقق (Pending)
+              </h2>
+           </div>
+           <span className="text-[9px] font-mono text-slate-700 uppercase tracking-widest">Verification_Queue_Alpha</span>
         </div>
         
         <UserApprovalList users={pendingUsers || []} />
       </div>
 
-      {/* Verified Users Section (Optional - Quick View) */}
-      <div className="space-y-6 pt-10">
+      {/* Verified Users Section (Quick View) */}
+      <div className="space-y-6 pt-10 border-t border-white/5">
         <div className="flex items-center justify-between px-2">
-           <h2 className="text-2xl font-black tracking-tighter flex items-center gap-3 text-white/80">
-              <ShieldCheck className="w-6 h-6 text-primary" />
-              الطلاب المقبولين (Approved)
+           <h2 className="text-xl font-black tracking-tighter flex items-center gap-3 text-slate-500 italic">
+              <ShieldCheck className="w-5 h-5" />
+              المقبولين قريباً (Approved)
            </h2>
-           <span className="text-[10px] font-mono text-slate-600 uppercase">Deployed_Entities</span>
+           <span className="text-[9px] font-mono text-slate-800 uppercase tracking-widest">Deployed_Entities_Index</span>
         </div>
         
-        <div className="opacity-70 grayscale-[0.5]">
+        <div className="opacity-60 grayscale-[0.3]">
           <UserApprovalList users={(approvedUsers || []).slice(0, 6)} />
         </div>
       </div>
