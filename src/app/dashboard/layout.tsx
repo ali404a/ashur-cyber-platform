@@ -107,21 +107,15 @@ export default function DashboardLayout({
             <h1 className="text-2xl md:text-3xl font-black tracking-tighter">مرحباً، علي! 👋</h1>
             <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-widest">Student_ID: 2024_CYB_982 // Phase_03</p>
           </div>
-          <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto p-4 md:p-0 glass-morphism md:bg-transparent rounded-2xl md:rounded-none border-white/5 md:border-none">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 glass-morphism rounded-full flex items-center justify-center border border-primary/20 hover:border-primary transition-colors cursor-pointer">
-                <Mail className="w-5 h-5 text-primary" />
-              </div>
-              <div className="h-10 w-10 glass-morphism rounded-full flex items-center justify-center border border-secondary/20 hover:border-secondary transition-colors cursor-pointer">
-                <Bell className="w-5 h-5 text-secondary" />
-              </div>
-            </div>
-            <div className="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/5 border border-white/10">
-               <div className="text-left md:text-right hidden sm:block">
-                  <p className="text-[10px] font-bold text-white leading-none mb-1">علي حسن</p>
-                  <p className="text-[8px] font-mono text-primary uppercase">Active</p>
+          <div className="flex items-center justify-end gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 glass-morphism">
+               <div className="text-right">
+                  <p className="text-xs font-black text-white leading-none mb-1">علي حسن</p>
+                  <p className="text-[8px] font-mono text-primary uppercase tracking-widest">System_Active</p>
                </div>
-               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-white/10" />
+               <div className="h-8 w-8 rounded-lg bg-primary/20 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs">
+                  CY
+               </div>
             </div>
           </div>
         </header>
