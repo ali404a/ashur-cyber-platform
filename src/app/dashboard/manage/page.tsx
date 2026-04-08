@@ -53,18 +53,15 @@ export default async function ManagementPage() {
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
         
         {/* Left Column: Command & Deployment (4/12) */}
-        <div className="xl:col-span-4 space-y-8">
+        <div id="news" className="xl:col-span-4 space-y-8 scroll-mt-24">
            
            <div className="space-y-2 mb-8">
               <h3 className="text-xl font-black text-white flex items-center gap-3">
                  <Zap className="w-5 h-5 text-secondary" />
-                 قمرة القيادة
+                 قمرة القيادة والاتصالات
               </h3>
-              <p className="text-xs text-slate-500 font-mono">CORE_OPERATIONS // SYSTEM_DEPLOYMENT</p>
+              <p className="text-xs text-slate-500 font-mono text-right">COMM_OPS // BULLETINS_DEPLOYMENT</p>
            </div>
-
-           {/* Add New Subject Module */}
-           <AddSubjectForm />
 
            {/* Post News Bulletin */}
            <AddPostForm />
@@ -76,15 +73,18 @@ export default async function ManagementPage() {
         </div>
 
         {/* Right Column: Intelligence & Storage (8/12) */}
-        <div className="xl:col-span-8 space-y-12">
+        <div id="subjects" className="xl:col-span-8 space-y-12 scroll-mt-24">
            
            <div className="space-y-2 mb-8">
               <h3 className="text-xl font-black text-white flex items-center gap-3">
                  <Layers className="w-5 h-5 text-primary" />
-                 قاعدة البيانات والمحاضرات
+                 إدارة المواد والأرشيف الأكاديمي
               </h3>
-              <p className="text-xs text-slate-500 font-mono">ACADEMIC_INTELLIGENCE // CONTENT_HUB</p>
+              <p className="text-xs text-slate-500 font-mono text-right">ACADEMIC_INTELLIGENCE // HUB_STORAGE</p>
            </div>
+
+           {/* Add New Subject Module */}
+           <AddSubjectForm />
 
            {/* Lecture Upload Station */}
            <AddMaterialForm subjects={subjects || []} />

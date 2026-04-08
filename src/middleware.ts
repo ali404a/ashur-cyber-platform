@@ -31,17 +31,15 @@ export function middleware(request: NextRequest) {
   }
 
   // 4. Protection for student-only areas within /dashboard
-  // Redirect staff and admins to their respective dashboards if they hit the student root
-  if (pathname === "/dashboard" || (pathname.startsWith("/dashboard") && !pathname.startsWith("/dashboard/manage"))) {
+  // Redirect staff and admins to their respective dashboards if they hit ANY student route
+  if (pathname.startsWith("/dashboard") && !pathname.startsWith("/dashboard/manage")) {
     if (!userPhone) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     
-    // Cross-role protection: If Staff/Admin is at student root, push back to their zone
-    if (pathname === "/dashboard") {
-      if (userRole === "admin") return NextResponse.redirect(new URL("/admins", request.url));
-      if (userRole === "management") return NextResponse.redirect(new URL("/dashboard/manage", request.url));
-    }
+    // Cross-role protection: If Staff/Admin is in student territory, push back to their zone
+    if (userRole === "admin") return NextResponse.redirect(new URL("/admins", request.url));
+    if (userRole === "management") return NextResponse.redirect(new URL("/dashboard/manage", request.url));
   }
 
   return NextResponse.next();
