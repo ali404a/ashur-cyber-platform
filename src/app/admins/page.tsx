@@ -21,14 +21,6 @@ export default async function AdminPortalPage() {
 
   if (!dbUser || dbUser.role !== "admin") redirect("/staff");
 
-  // Sync cookie if it was stale
-  cookieStore.set("user_role", "admin", {
-    httpOnly: true,
-    secure: true,
-    maxAge: 30 * 24 * 60 * 60,
-    path: "/",
-  });
-
   const { users: pendingUsers } = await getUsersByStatus("pending");
   const { users: approvedUsers } = await getUsersByStatus("approved");
   const { users: rejectedUsers } = await getUsersByStatus("rejected");
