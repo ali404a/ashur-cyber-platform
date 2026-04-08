@@ -214,9 +214,9 @@ export default function StaffLoginPage() {
         </div>
 
         <div className="text-center mt-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-xs text-slate-600 hover:text-slate-400 transition-colors font-mono">
+          <Link href="https://ashur.alsadim.xyz" className="inline-flex items-center gap-2 text-xs text-slate-600 hover:text-slate-400 transition-colors font-mono">
             <ArrowRight className="w-3 h-3 rotate-180" />
-            العودة للصفحة الرئيسية
+            العودة للصفحة الرئيسية للطلاب
           </Link>
         </div>
       </div>
