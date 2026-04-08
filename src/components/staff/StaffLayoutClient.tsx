@@ -48,12 +48,12 @@ export default function StaffLayoutClient({ children }: StaffLayoutClientProps) 
   }, []);
 
   const menuItems = [
-    { id: "manage", name: "مركز التحكم الشامل", icon: <Layout className="w-5 h-5" />, href: "/dashboard/manage" },
-    { id: "bulletins", name: "إدارة البلاغات", icon: <Bell className="w-5 h-5 text-blue-400" />, href: "/dashboard/manage#news" },
+    { id: "manage", name: "مركز التحكم الشامل", icon: <Layout className="w-5 h-5" />, href: "/management" },
+    { id: "bulletins", name: "إدارة البلاغات", icon: <Bell className="w-5 h-5 text-blue-400" />, href: "/management#news" },
     ...(userRole === "admin" ? [
       { id: "admin", name: "غرفة القيادة العليا", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/admins" }
     ] : []),
-    { id: "files", name: "المواد والأرشيف", icon: <BookOpen className="w-5 h-5 text-cyan-400" />, href: "/dashboard/manage#subjects" },
+    { id: "files", name: "المواد والأرشيف", icon: <BookOpen className="w-5 h-5 text-cyan-400" />, href: "/management#subjects" },
   ];
 
   return (

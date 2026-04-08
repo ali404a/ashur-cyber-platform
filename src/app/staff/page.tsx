@@ -42,7 +42,7 @@ export default function StaffLoginPage() {
         if (result.role === "admin") {
           router.push("/admins");
         } else {
-          router.push("/dashboard/manage");
+          router.push("/management");
         }
       }, 800);
     } else {

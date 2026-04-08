@@ -39,7 +39,22 @@ export function middleware(request: NextRequest) {
     
     // Cross-role protection: If Staff/Admin is in student territory, push back to their zone
     if (userRole === "admin") return NextResponse.redirect(new URL("/admins", request.url));
-    if (userRole === "management") return NextResponse.redirect(new URL("/dashboard/manage", request.url));
+    if (userRole === "management") return NextResponse.redirect(new URL("/management", request.url));
+  }
+
+  // 5. NEW: Protection for /management root route
+  if (pathname.startsWith("/management")) {
+    if (!userPhone) {
+      return NextResponse.redirect(new URL("/staff", request.url));
+    }
+    if (userRole === "student") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+  }
+
+  // 6. Legacy Redirect: /dashboard/manage -> /management
+  if (pathname === "/dashboard/manage") {
+      return NextResponse.redirect(new URL("/management", request.url));
   }
 
   return NextResponse.next();
