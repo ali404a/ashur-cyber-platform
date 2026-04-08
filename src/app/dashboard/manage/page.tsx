@@ -33,7 +33,7 @@ export default async function ManagementPage() {
   ];
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-10 pb-20 px-4 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+    <div className="space-y-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
       
       {/* Tactical Status Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -67,6 +67,14 @@ export default function DashboardLayout({
         { name: "أرشيف الملفات", icon: <BookOpen className="w-5 h-5 text-blue-400" />, href: "/dashboard/files" },
       ];
 
+  // FULL ISOLATION: Bypass this layout for management/staff specific paths
+  // They will use their own dedicated layout.tsx in their route folder.
+  if (pathname.startsWith("/dashboard/manage") || userRole === "management" || userRole === "admin") {
+      if (pathname.startsWith("/dashboard/manage")) {
+          return <>{children}</>;
+      }
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
       {/* Mobile Header */}
