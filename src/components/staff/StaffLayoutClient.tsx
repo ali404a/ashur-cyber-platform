@@ -34,7 +34,8 @@ export default function StaffLayoutClient({ children }: StaffLayoutClientProps) 
 
   async function handleLogout() {
     await logout();
-    router.push("/staff");
+    // On subdomain, "/" is rewritten to "/staff"
+    router.push("/");
   }
 
   useEffect(() => {
@@ -77,8 +78,8 @@ export default function StaffLayoutClient({ children }: StaffLayoutClientProps) 
           isSidebarOpen ? "translate-x-0 w-72" : "translate-x-full md:translate-x-0 w-0 md:w-20"
         } transition-all duration-500 bg-[#050b1d]/80 backdrop-blur-3xl border-l border-white/5 flex flex-col p-4 fixed right-0 h-full z-[60] md:z-40 md:flex overflow-hidden`}
       >
-        <div className="mb-12 flex items-center gap-4 px-2 mt-2">
-          <div className="relative group">
+        <Link href="/" className="mb-12 flex items-center gap-4 px-2 mt-2 group cursor-pointer">
+          <div className="relative">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center font-black text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] group-hover:scale-105 transition-transform">
               OC
             </div>
@@ -90,7 +91,7 @@ export default function StaffLayoutClient({ children }: StaffLayoutClientProps) 
               <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest">v2.0_Academic_Lvl</span>
             </div>
           )}
-        </div>
+        </Link>
 
         <nav className="flex-1 space-y-2">
           {menuItems.map((item) => (
