@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
   if (authPaths.includes(pathname)) {
     if (userPhone && userRole) {
       if (userRole === "admin") return NextResponse.redirect(new URL("/admins", request.url));
-      if (userRole === "management") return NextResponse.redirect(new URL("/dashboard/manage", request.url));
+      if (userRole === "management") return NextResponse.redirect(new URL("/management", request.url));
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
@@ -56,10 +56,14 @@ export function middleware(request: NextRequest) {
   if (pathname === "/dashboard/manage") {
       return NextResponse.redirect(new URL("/management", request.url));
   }
+  
+  if (pathname === "/dashboard/admin") {
+      return NextResponse.redirect(new URL("/management", request.url));
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admins/:path*", "/dashboard/:path*", "/login", "/register", "/staff"],
+  matcher: ["/admins/:path*", "/dashboard/:path*", "/management/:path*", "/login", "/register", "/staff"],
 };

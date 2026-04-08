@@ -51,28 +51,23 @@ export default function DashboardLayout({
     if (name) setUserName(decodeURIComponent(name));
   }, []);
 
-  const menuItems = userRole === "student" 
-    ? [
-        { name: "المنشورات", icon: <Bell className="w-5 h-5" />, href: "/dashboard" },
-        { name: "جدول المحاضرات", icon: <Calendar className="w-5 h-5" />, href: "/dashboard/schedule" },
-        { name: "سشن الدراسة", icon: <Clock className="w-5 h-5" />, href: "/dashboard/study" },
-        { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },
-      ]
-    : [
-        { name: "المنشورات العامة", icon: <Bell className="w-5 h-5 text-blue-400" />, href: "/dashboard" },
-        { name: "مركز الإدارة", icon: <Shield className="w-5 h-5 text-secondary" />, href: "/dashboard/manage" },
-        ...(userRole === "admin" ? [
-          { name: "قيادة النظام", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/admins" }
-        ] : []),
-        { name: "أرشيف الملفات", icon: <BookOpen className="w-5 h-5 text-blue-400" />, href: "/dashboard/files" },
-      ];
+  const menuItems = [
+    { name: "المنشورات", icon: <Bell className="w-5 h-5" />, href: "/dashboard" },
+    { name: "جدول المحاضرات", icon: <Calendar className="w-5 h-5" />, href: "/dashboard/schedule" },
+    { name: "سشن الدراسة", icon: <Clock className="w-5 h-5" />, href: "/dashboard/study" },
+    { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },
+  ];
 
-  // FULL ISOLATION: Bypass this layout for management/staff specific paths
-  // They will use their own dedicated layout.tsx in their route folder.
-  if (pathname.startsWith("/dashboard/manage") || userRole === "management" || userRole === "admin") {
-      if (pathname.startsWith("/dashboard/manage")) {
-          return <>{children}</>;
-      }
+  // 1. Guard against non-student access to this specific layout zone
+  if (userRole && userRole !== "student") {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-6 text-center">
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-red-500">منطقة محظورة</h2>
+          <p className="text-slate-400 font-arabic">هذا المسار مخصص للطلاب فقط. جاري توجيهك لمركز العمليات الخاص بك...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
