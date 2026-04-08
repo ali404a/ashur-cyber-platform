@@ -9,11 +9,18 @@ import {
   ClipboardList
 } from "lucide-react";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { getLatestPosts } from "@/app/actions/managementActions";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
   const userPhone = cookieStore.get("user_phone")?.value;
+  const userRole = cookieStore.get("user_role")?.value;
+
+  // ABSOLUTE SERVER-SIDE ISOLATION
+  if (!userPhone) redirect("/login");
+  if (userRole === "admin") redirect("/admins");
+  if (userRole === "management") redirect("/management");
 
   // Fetch real posts from DB
   const { posts: dynamicPosts } = await getLatestPosts();

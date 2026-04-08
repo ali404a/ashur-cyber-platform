@@ -20,7 +20,8 @@ export default async function TopLevelManagementPage() {
 
   // SOVEREIGN AUTH CHECK
   if (!userPhone) redirect("/staff");
-  if (userRole !== "management" && userRole !== "admin") redirect("/login");
+  if (userRole === "student") redirect("/dashboard");
+  if (userRole !== "management" && userRole !== "admin") redirect("/staff");
 
   const { subjects } = await getAllSubjects();
   const { posts } = await getLatestPosts();
