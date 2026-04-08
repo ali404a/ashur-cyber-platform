@@ -25,43 +25,67 @@ export default async function ManagementPage() {
   const { subjects } = await getAllSubjects();
   const { posts } = await getLatestPosts();
 
+  // Calculate some stats for the command center feel
+  const stats = [
+    { label: "المواد النشطة", value: subjects?.length || 0, icon: <Layers className="w-4 h-4" /> },
+    { label: "المحاضرات", value: subjects?.reduce((acc: number, s: any) => acc + (s.materials?.length || 0), 0) || 0, icon: <BookOpen className="w-4 h-4" /> },
+    { label: "البلاغات", value: posts?.length || 0, icon: <MessageSquare className="w-4 h-4" /> },
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto space-y-12 pb-20 px-4">
-      {/* Admin Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-1.5">
-          <h1 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight flex items-center gap-4 text-white">
-             <Layout className="w-8 h-8 text-secondary" />
-             مركز الإدارة التعليمية
-          </h1>
-          <p className="text-[10px] md:text-xs text-slate-500 font-mono uppercase tracking-[0.4em]">
-             Academic_Command_Center // Node_v01.0
-          </p>
-        </div>
-        <div className="flex items-center gap-3 bg-secondary/10 px-6 py-3 rounded-2xl border border-secondary/20 w-fit">
-           <ShieldCheck className="w-5 h-5 text-secondary" />
-           <span className="text-xs font-black text-secondary uppercase tracking-widest">Admin_Access_LvL_01</span>
-        </div>
+    <div className="max-w-[1600px] mx-auto space-y-10 pb-20 px-4 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      
+      {/* Tactical Status Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {stats.map((stat, i) => (
+          <div key={i} className="glass-morphism p-6 rounded-3xl border border-white/5 flex items-center justify-between group hover:border-secondary/30 transition-all">
+            <div>
+              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
+              <h4 className="text-3xl font-black text-white">{stat.value}</h4>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+              {stat.icon}
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
         
-        {/* Left Column: Post Center & New Subjects */}
-        <div className="lg:col-span-1 space-y-8">
+        {/* Left Column: Command & Deployment (4/12) */}
+        <div className="xl:col-span-4 space-y-8">
            
+           <div className="space-y-2 mb-8">
+              <h3 className="text-xl font-black text-white flex items-center gap-3">
+                 <Zap className="w-5 h-5 text-secondary" />
+                 قمرة القيادة
+              </h3>
+              <p className="text-xs text-slate-500 font-mono">CORE_OPERATIONS // SYSTEM_DEPLOYMENT</p>
+           </div>
+
            {/* Add New Subject Module */}
            <AddSubjectForm />
 
            {/* Post News Bulletin */}
            <AddPostForm />
 
-           {/* Posts Inventory */}
-           <PostsList posts={posts || []} />
+           {/* Recent Bulletins */}
+           <div className="pt-4">
+              <PostsList posts={posts || []} />
+           </div>
         </div>
 
-        {/* Right Column: Upload Hub & Subjects Inventory */}
-        <div className="lg:col-span-2 space-y-12">
+        {/* Right Column: Intelligence & Storage (8/12) */}
+        <div className="xl:col-span-8 space-y-12">
            
+           <div className="space-y-2 mb-8">
+              <h3 className="text-xl font-black text-white flex items-center gap-3">
+                 <Layers className="w-5 h-5 text-primary" />
+                 قاعدة البيانات والمحاضرات
+              </h3>
+              <p className="text-xs text-slate-500 font-mono">ACADEMIC_INTELLIGENCE // CONTENT_HUB</p>
+           </div>
+
            {/* Lecture Upload Station */}
            <AddMaterialForm subjects={subjects || []} />
 

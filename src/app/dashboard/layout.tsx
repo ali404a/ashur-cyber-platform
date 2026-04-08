@@ -45,24 +45,27 @@ export default function DashboardLayout({
     // Get role and name from cookie on client
     const cookiesArray = document.cookie.split('; ');
     const role = cookiesArray.find(row => row.startsWith('user_role='))?.split('=')[1];
-    const phone = cookiesArray.find(row => row.startsWith('user_phone='))?.split('=')[1];
+    const name = cookiesArray.find(row => row.startsWith('user_name='))?.split('=')[1];
     
     if (role) setUserRole(decodeURIComponent(role));
-    // We can't get the full name easily from a phone number cookie without a fetch, 
-    // but for now let's at least show the correct Role type and a generic welcome.
+    if (name) setUserName(decodeURIComponent(name));
   }, []);
 
-  const menuItems = [
-    { name: "المنشورات", icon: <Bell className="w-5 h-5" />, href: "/dashboard" },
-    { name: "جدول المحاضرات", icon: <Calendar className="w-5 h-5" />, href: "/dashboard/schedule" },
-    { name: "سشن الدراسة", icon: <Clock className="w-5 h-5" />, href: "/dashboard/study" },
-    // Admin and Management items
-    ...((userRole === "admin" || userRole === "management") ? [
-      ...(userRole === "admin" ? [{ name: "مركز القيادة", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/admins" }] : []),
-      { name: "إدارة المحتوى", icon: <Shield className="w-5 h-5 text-secondary" />, href: "/dashboard/manage" },
-    ] : []),
-    { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },
-  ];
+  const menuItems = userRole === "student" 
+    ? [
+        { name: "المنشورات", icon: <Bell className="w-5 h-5" />, href: "/dashboard" },
+        { name: "جدول المحاضرات", icon: <Calendar className="w-5 h-5" />, href: "/dashboard/schedule" },
+        { name: "سشن الدراسة", icon: <Clock className="w-5 h-5" />, href: "/dashboard/study" },
+        { name: "الملفات الدراسية", icon: <BookOpen className="w-5 h-5" />, href: "/dashboard/files" },
+      ]
+    : [
+        { name: "المنشورات العامة", icon: <Bell className="w-5 h-5 text-blue-400" />, href: "/dashboard" },
+        { name: "مركز الإدارة", icon: <Shield className="w-5 h-5 text-secondary" />, href: "/dashboard/manage" },
+        ...(userRole === "admin" ? [
+          { name: "قيادة النظام", icon: <ShieldCheck className="w-5 h-5 text-primary" />, href: "/admins" }
+        ] : []),
+        { name: "أرشيف الملفات", icon: <BookOpen className="w-5 h-5 text-blue-400" />, href: "/dashboard/files" },
+      ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
@@ -121,22 +124,32 @@ export default function DashboardLayout({
         <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-8">
           <div className="space-y-1.5 md:mr-4 text-right">
             <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-tight">
-              {userRole === "student" ? "مرحباً بك في لوحتك الدراسية" : "مرحباً بك في مركز الإدارة"}
+              مرحباً، {userName}! 👋
             </h1>
             <p className="text-[10px] md:text-sm text-slate-500 font-mono uppercase tracking-[0.3em]">
               {userRole === "student" ? "STUDENT_SESSION // ACTIVE" : "PRIVILEGED_NODE // AUTHORIZED"}
             </p>
           </div>
           <div className="flex items-center justify-end gap-4 w-full md:w-auto">
-            <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 glass-morphism">
+            <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border glass-morphism transition-colors duration-500 ${
+              userRole === "admin" ? "border-primary/20" : userRole === "management" ? "border-blue-500/20" : "border-white/10"
+            }`}>
                <div className="text-right">
                   <p className="text-xs font-black text-white leading-none mb-1">
-                    {userRole === "admin" ? "مدير النظام" : userRole === "management" ? "كادر تدريسي" : "طالب"}
+                    {userName}
                   </p>
-                  <p className="text-[8px] font-mono text-primary uppercase tracking-widest">{userRole.toUpperCase()}_AUTHORITY</p>
+                  <p className={`text-[8px] font-mono uppercase tracking-widest ${
+                    userRole === "admin" ? "text-primary" : userRole === "management" ? "text-blue-400" : "text-slate-400"
+                  }`}>
+                    {userRole === "admin" ? "ADMIN" : userRole === "management" ? "STAFF" : "STUDENT"}_AUTHORITY
+                  </p>
                </div>
-               <div className="h-8 w-8 rounded-lg bg-primary/20 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs">
-                  CY
+               <div className={`h-8 w-8 rounded-lg flex items-center justify-center font-bold text-xs ${
+                 userRole === "admin" ? "bg-primary/20 text-primary border border-primary/20" : 
+                 userRole === "management" ? "bg-blue-500/20 text-blue-400 border border-blue-500/20" : 
+                 "bg-white/5 text-slate-400 border border-white/10"
+               }`}>
+                  {userRole[0].toUpperCase()}
                </div>
             </div>
           </div>
