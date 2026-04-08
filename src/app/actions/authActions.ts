@@ -45,8 +45,8 @@ export async function loginStudent(formData: FormData) {
     cookieStore.set("user_phone", user.phoneNumber, { httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
     cookieStore.set("user_role", user.role, { httpOnly: false, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
     cookieStore.set("user_name", user.fullName, { httpOnly: false, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
-
-    return { success: true, message: "تم تسجيل الدخول بنجاح!" };
+    
+    return { success: true, message: "تم تسجيل الدخول بنجاح!", role: user.role };
   } catch (error: any) {
     console.error("Login error:", error);
     return { success: false, message: "حدث خطأ أثناء تسجيل الدخول" };

@@ -25,6 +25,11 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     
+    // Hard Reset: Clear any legacy sessions/roles before new login
+    document.cookie = "user_role=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    document.cookie = "user_phone=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    document.cookie = "user_name=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+
     const { loginStudent } = await import("@/app/actions/authActions");
     const data = new FormData();
     data.append("phone", formData.phone);
@@ -34,7 +39,14 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (res.success) {
-      window.location.href = "/dashboard";
+      // Dynamic Redirect based on verified Server Role
+      if (res.role === "admin") {
+        window.location.href = "/admins";
+      } else if (res.role === "management") {
+        window.location.href = "/management";
+      } else {
+        window.location.href = "/dashboard";
+      }
     } else {
       alert(res.message);
     }
