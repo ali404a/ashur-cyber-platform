@@ -4,13 +4,32 @@ import dbConnect from "@/lib/db";
 import User from "@/models/User";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
+
+async function verifyAuth(requiredRole: "admin" | "management" | "any" = "admin") {
+  const cookieStore = await cookies();
+  const phone = cookieStore.get("user_phone")?.value;
+  if (!phone) return null;
+
+  await dbConnect();
+  const user = await User.findOne({ phoneNumber: phone }).lean() as any;
+  if (!user) return null;
+
+  if (requiredRole === "any") return user;
+  if (requiredRole === "admin" && user.role !== "admin") return null;
+  if (requiredRole === "management" && (user.role !== "admin" && user.role !== "management")) return null;
+
+  return user;
+}
 
 /**
  * Gets users filtered by status (Pending, Approved, Rejected)
  */
 export async function getUsersByStatus(status: "pending" | "approved" | "rejected" | "all") {
   try {
-    await dbConnect();
+    const admin = await verifyAuth("management");
+    if (!admin) return { success: false, error: "غير مصرح لك بالوصول لهذا المصدر" };
+
     const query = status === "all" ? {} : { status };
     const users = await User.find(query).sort({ createdAt: -1 }).lean();
     return { success: true, users: JSON.parse(JSON.stringify(users)) };
@@ -24,50 +43,29 @@ export async function getUsersByStatus(status: "pending" | "approved" | "rejecte
  */
 export async function updateUserStatus(userId: string, newStatus: "approved" | "rejected" | "pending") {
   try {
-    await dbConnect();
+    const admin = await verifyAuth("admin");
+    if (!admin) return { success: false, error: "غير مصرح لك بتغيير حالات المستخدمين" };
+
     await User.findByIdAndUpdate(userId, { status: newStatus });
-    revalidatePath("/dashboard/admin");
+    revalidatePath("/admins");
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
 }
 
-/**
- * Administrative upgrade for the first admin (Safety logic)
- */
-export async function upgradeToAdmin(phoneNumber: string) {
-  try {
-    await dbConnect();
-    
-    // Hash the password 'ashur2026' for initial access
-    const hashedPassword = await bcrypt.hash("ashur2026", 10);
-    
-    await User.findOneAndUpdate(
-      { phoneNumber }, 
-      { 
-        password: hashedPassword,
-        role: "admin", 
-        status: "approved" 
-      },
-      { upsert: true }
-    );
-    
-    revalidatePath("/dashboard");
-    return { success: true, message: "تمت ترقية الحساب وتعيين رمز الدخول بنجاح 🛡️" };
-  } catch (error: any) {
-    return { success: false, error: error.message };
-  }
-}
+// REMOVED upgradeToAdmin for security. Direct DB intervention only now.
 
 /**
  * Deletes a user profile
  */
 export async function deleteUser(userId: string) {
   try {
-    await dbConnect();
+    const admin = await verifyAuth("admin");
+    if (!admin) return { success: false, error: "غير مصرح لك بحذف المستخدمين" };
+
     await User.findByIdAndDelete(userId);
-    revalidatePath("/dashboard/admin");
+    revalidatePath("/admins");
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -79,7 +77,8 @@ export async function deleteUser(userId: string) {
  */
 export async function createStaffAccount(formData: FormData) {
   try {
-    await dbConnect();
+    const admin = await verifyAuth("admin");
+    if (!admin) return { success: false, error: "غير مصرح لك بإضافة أعضاء كادر" };
     
     const academicTitle = formData.get("academicTitle") as string;
     const rawName = formData.get("fullName") as string;
@@ -106,7 +105,7 @@ export async function createStaffAccount(formData: FormData) {
     });
 
     await newUser.save();
-    revalidatePath("/dashboard/admin");
+    revalidatePath("/admins");
     return { success: true, message: `تم تفعيل حساب (${fullName}) بنجاح 🛡️` };
   } catch (error: any) {
     console.error("Staff creation error:", error);

@@ -43,7 +43,7 @@ export async function loginStudent(formData: FormData) {
 
     const cookieStore = await cookies();
     cookieStore.set("user_phone", user.phoneNumber, { httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
-    cookieStore.set("user_role", user.role, { httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
+    cookieStore.set("user_role", user.role, { httpOnly: false, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
 
     return { success: true, message: "تم تسجيل الدخول بنجاح!" };
   } catch (error: any) {
@@ -79,7 +79,7 @@ export async function loginStaff(formData: FormData) {
 
     const cookieStore = await cookies();
     cookieStore.set("user_phone", user.phoneNumber, { httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
-    cookieStore.set("user_role", user.role, { httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
+    cookieStore.set("user_role", user.role, { httpOnly: false, secure: true, maxAge: 30 * 24 * 60 * 60, path: "/" });
 
     return { success: true, message: "تم التحقق بنجاح 🛡️", role: user.role };
   } catch (error: any) {
