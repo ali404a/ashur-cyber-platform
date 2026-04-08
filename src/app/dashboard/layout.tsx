@@ -33,7 +33,11 @@ export default function DashboardLayout({
 
   async function handleLogout() {
     await logout();
-    router.push("/staff");
+    if (userRole === "admin" || userRole === "management") {
+      router.push("/staff");
+    } else {
+      router.push("/");
+    }
   }
 
   useEffect(() => {
