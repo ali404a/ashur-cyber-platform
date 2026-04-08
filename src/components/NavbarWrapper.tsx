@@ -10,6 +10,7 @@ export default function NavbarWrapper() {
   const shouldHide =
     pathname.startsWith("/staff") ||
     pathname.startsWith("/admins") ||
+    pathname.startsWith("/management") ||
     pathname.startsWith("/dashboard");
 
   if (shouldHide) return null;
