@@ -3,10 +3,16 @@
 import connectDB from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export async function registerStudent(formData: FormData) {
   try {
+    const headersList = await headers();
+    const host = headersList.get("host") || "";
+    if (host.includes("staff.ashur.alsadim.xyz")) {
+      return { success: false, message: "عذراً، لا يمكن التسجيل كطالب من خلال بوابة الموظفين." };
+    }
+
     await connectDB();
     const fullName = formData.get("fullName") as string;
     const phoneNumber = formData.get("phoneNumber") as string;
@@ -30,6 +36,14 @@ export async function registerStudent(formData: FormData) {
 
 export async function loginStudent(formData: FormData) {
   try {
+    const headersList = await headers();
+    const host = headersList.get("host") || "";
+    
+    // Server-side Domain Guard
+    if (host.includes("staff.ashur.alsadim.xyz")) {
+      return { success: false, message: "عذراً، بوابة الطلاب متوفرة فقط على النطاق الرئيسي." };
+    }
+
     await connectDB();
     const phoneNumber = formData.get("phone") as string;
     const password = formData.get("password") as string;
@@ -55,6 +69,15 @@ export async function loginStudent(formData: FormData) {
 
 export async function loginStaff(formData: FormData) {
   try {
+    const headersList = await headers();
+    const host = headersList.get("host") || "";
+    
+    // Server-side Domain Guard
+    const MAIN_DOMAIN = "ashur.alsadim.xyz";
+    if (host === MAIN_DOMAIN) {
+      return { success: false, message: "عذراً، يجب تسجيل الدخول من خلال بوابة الإدارة المخصصة." };
+    }
+
     await connectDB();
 
     const phoneNumber = formData.get("phone") as string;

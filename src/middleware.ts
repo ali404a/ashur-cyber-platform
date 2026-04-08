@@ -8,22 +8,41 @@ export function middleware(request: NextRequest) {
   const userPhone = request.cookies.get("user_phone")?.value;
 
   const STAFF_SUBDOMAIN = "staff.ashur.alsadim.xyz";
+  const MAIN_DOMAIN = "ashur.alsadim.xyz";
   const isStaffDomain = host === STAFF_SUBDOMAIN;
 
-  // 1. SUBDOMAIN ROUTING LOGIC
+  // 1. ABSOLUTE PURGE & ROUTING LOGIC
   if (isStaffDomain) {
-    // On the staff subdomain, "/" should serve the staff login page
+    // PURGE: If a STUDENT tries to use the Staff Subdomain, wipe their cookies and kick them to Main
+    if (userRole === "student") {
+        const response = NextResponse.redirect(new URL(`https://${MAIN_DOMAIN}${pathname}`, request.url));
+        response.cookies.delete("user_role");
+        response.cookies.delete("user_phone");
+        response.cookies.delete("user_name");
+        return response;
+    }
+
     if (pathname === "/") {
       return NextResponse.rewrite(new URL("/staff", request.url));
     }
-    // Block student-only paths on staff subdomain
+    
+    // Block student paths on staff domain
     if (pathname.startsWith("/login") || pathname.startsWith("/register") || (pathname.startsWith("/dashboard") && !pathname.startsWith("/dashboard/manage"))) {
-        return NextResponse.redirect(new URL(`https://ashur.alsadim.xyz${pathname}`, request.url));
+        return NextResponse.redirect(new URL(`https://${MAIN_DOMAIN}${pathname}`, request.url));
     }
   } else {
-    // On the main domain, hide staff paths and redirect them to the subdomain
+    // PURGE: If an ADMIN/STAFF tries to use the Main Domain, wipe their cookies and kick them to Subdomain
+    if (userRole === "admin" || userRole === "management") {
+        const response = NextResponse.redirect(new URL(`https://${STAFF_SUBDOMAIN}${pathname === "/" ? "" : pathname}`, request.url));
+        response.cookies.delete("user_role");
+        response.cookies.delete("user_phone");
+        response.cookies.delete("user_name");
+        return response;
+    }
+
+    // Hide staff paths on main domain
     if (pathname === "/staff" || pathname.startsWith("/management") || pathname.startsWith("/admins")) {
-        return NextResponse.redirect(new URL(`https://staff.ashur.alsadim.xyz${pathname}`, request.url));
+        return NextResponse.redirect(new URL(`https://${STAFF_SUBDOMAIN}${pathname}`, request.url));
     }
   }
 
@@ -40,7 +59,7 @@ export function middleware(request: NextRequest) {
   // 3. Protection for /admins (Admin Only)
   if (pathname.startsWith("/admins")) {
     if (!userPhone || userRole !== "admin") {
-      const target = isStaffDomain ? "/" : "https://staff.ashur.alsadim.xyz/";
+      const target = isStaffDomain ? "/" : `https://${STAFF_SUBDOMAIN}/`;
       return NextResponse.redirect(new URL(target, request.url));
     }
   }
@@ -50,15 +69,16 @@ export function middleware(request: NextRequest) {
     if (!userPhone) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    // Student territory protection
-    if (userRole === "admin") return NextResponse.redirect(new URL("/admins", request.url));
-    if (userRole === "management") return NextResponse.redirect(new URL("/management", request.url));
+    // Student territory protection (Sanitary backup)
+    if (userRole === "admin" || userRole === "management") {
+        return NextResponse.redirect(new URL(`https://${STAFF_SUBDOMAIN}`, request.url));
+    }
   }
 
   // 5. Protection for /management (Staff Only)
   if (pathname.startsWith("/management")) {
     if (!userPhone) {
-      const target = isStaffDomain ? "/" : "https://staff.ashur.alsadim.xyz/";
+      const target = isStaffDomain ? "/" : `https://${STAFF_SUBDOMAIN}/`;
       return NextResponse.redirect(new URL(target, request.url));
     }
     if (userRole === "student") {
