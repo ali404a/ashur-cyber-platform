@@ -43,17 +43,17 @@ export default function AddPostForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
          <div className="space-y-1.5">
             <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest block pr-2">Bulletin_Title</label>
-            <input name="title" required type="text" placeholder="عنوان البلاغ..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm focus:border-primary outline-none transition-all placeholder:text-slate-800" />
+            <input name="title" required type="text" placeholder="عنوان البلاغ..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:border-primary outline-none transition-all placeholder:text-slate-500" />
          </div>
          
          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
                <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest block pr-2">Author_Name</label>
-               <input name="author" required type="text" placeholder="أ.د. علي حسن" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm focus:border-primary outline-none transition-all placeholder:text-slate-800" />
+               <input name="author" required type="text" placeholder="أ.د. علي حسن" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:border-primary outline-none transition-all placeholder:text-slate-500" />
             </div>
             <div className="space-y-1.5">
                <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest block pr-2">Position</label>
-               <input name="position" required type="text" placeholder="عميد الكلية" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm focus:border-primary outline-none transition-all placeholder:text-slate-800" />
+               <input name="position" required type="text" placeholder="عميد الكلية" className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:border-primary outline-none transition-all placeholder:text-slate-500" />
             </div>
          </div>
 
@@ -69,7 +69,7 @@ export default function AddPostForm() {
 
          <div className="space-y-1.5">
             <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest block pr-2">Detailed_Intelligence</label>
-            <textarea name="content" required placeholder="اكتب نص المنشور هنا..." rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm focus:border-primary outline-none transition-all resize-none placeholder:text-slate-800 font-medium" />
+            <textarea name="content" required placeholder="اكتب نص المنشور هنا..." rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:border-primary outline-none transition-all resize-none placeholder:text-slate-500 font-medium" />
          </div>
 
          {status && (

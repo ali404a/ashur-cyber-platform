@@ -34,8 +34,8 @@ export default function StaffLayoutClient({ children }: StaffLayoutClientProps) 
 
   async function handleLogout() {
     await logout();
-    // On subdomain, "/" is rewritten to "/staff"
-    router.push("/");
+    // Force full reload to ensure middleware handles subdomain routing correctly
+    window.location.href = "/";
   }
 
   useEffect(() => {
@@ -133,7 +133,7 @@ export default function StaffLayoutClient({ children }: StaffLayoutClientProps) 
             <Settings className="w-5 h-5 group-hover:rotate-45 transition-transform" />
             {isSidebarOpen && <span className="text-sm font-bold">إعدادات النظام</span>}
           </button>
-          <button onClick={handleLogout} className="w-full flex items-center gap-4 p-3 text-red-500/40 hover:text-red-400 transition-colors">
+          <button onClick={handleLogout} className="w-full flex items-center gap-4 p-3 text-red-500 hover:text-red-400 transition-colors">
             <LogOut className="w-5 h-5" />
             {isSidebarOpen && <span className="text-sm font-bold">خروج آمن</span>}
           </button>

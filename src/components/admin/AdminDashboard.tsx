@@ -28,7 +28,7 @@ export default function AdminDashboard({ stats, adminName, pendingUsers, approve
 
   async function handleLogout() {
     await logout();
-    router.push("/staff");
+    window.location.href = "/";
   }
 
   const navItems: { id: Tab; label: string; Icon: any; badge?: number }[] = [
@@ -242,9 +242,9 @@ export default function AdminDashboard({ stats, adminName, pendingUsers, approve
                     : (
                       <div className="space-y-3">
                         {staffUsers.map((user: any) => (
-                          <div key={user._id} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+                          <div key={user._id} className="flex flex-col md:flex-row md:items-center justify-between p-5 bg-white/[0.02] border border-white/5 rounded-3xl gap-4 hover:border-white/10 transition-all">
                             <div className="flex items-center gap-4">
-                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-black ${user.role === "admin" ? "bg-primary/10 text-primary border border-primary/20" : "bg-blue-500/10 text-blue-400 border border-blue-500/20"}`}>
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black ${user.role === "admin" ? "bg-primary/10 text-primary border border-primary/20" : "bg-blue-500/10 text-blue-400 border border-blue-500/20"}`}>
                                 {user.role === "admin" ? "A" : "S"}
                               </div>
                               <div className="text-right">
@@ -252,11 +252,46 @@ export default function AdminDashboard({ stats, adminName, pendingUsers, approve
                                 <p className="text-xs text-slate-500">{user.position || "بدون منصب"}</p>
                               </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <span className="font-mono text-xs text-slate-600 hidden md:block">{user.phoneNumber}</span>
-                              <span className={`text-[9px] font-black px-2.5 py-1 rounded-full ${user.role === "admin" ? "bg-primary/10 text-primary border border-primary/20" : "bg-blue-500/10 text-blue-400 border border-blue-500/20"}`}>
-                                {user.role === "admin" ? "ADMIN" : "STAFF"}
-                              </span>
+                            
+                            <div className="flex items-center justify-between md:justify-end gap-6 border-t md:border-t-0 border-white/5 pt-4 md:pt-0">
+                               <div className="flex flex-col items-end">
+                                  <span className="text-[9px] font-mono text-slate-600 mb-1">{user.phoneNumber}</span>
+                                  <div className="flex items-center gap-2">
+                                     <span className={`text-[8px] font-black px-2 py-0.5 rounded-full ${user.role === "admin" ? "bg-primary/20 text-primary" : "bg-blue-500/20 text-blue-400"}`}>
+                                       {user.role === "admin" ? "SUPER_ADMIN" : "PORTAL_STAFF"}
+                                     </span>
+                                  </div>
+                               </div>
+
+                               <div className="flex items-center gap-2">
+                                  <select 
+                                    className="bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] font-bold text-white focus:outline-none focus:border-primary/50"
+                                    defaultValue={user.role}
+                                    onChange={async (e) => {
+                                      const { updateStaffInfo } = await import("@/app/actions/adminActions");
+                                      await updateStaffInfo(user._id, { 
+                                        role: e.target.value, 
+                                        position: user.position,
+                                        fullName: user.fullName 
+                                      });
+                                    }}
+                                  >
+                                    <option value="management" className="bg-slate-900">كادر تدريسي</option>
+                                    <option value="admin" className="bg-slate-900">مسؤول نظام</option>
+                                  </select>
+
+                                  <button
+                                    onClick={async () => {
+                                      if (confirm("هل أنت متأكد من حذف هذا الحساب؟ لا يمكن التراجع.")) {
+                                        const { deleteUser } = await import("@/app/actions/adminActions");
+                                        await deleteUser(user._id);
+                                      }
+                                    }}
+                                    className="p-2 text-red-500/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                  </button>
+                               </div>
                             </div>
                           </div>
                         ))}

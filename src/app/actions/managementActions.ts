@@ -4,6 +4,7 @@ import dbConnect from "@/lib/db";
 import Subject from "@/models/Subject";
 import Material from "@/models/Material";
 import Post from "@/models/Post";
+import Schedule from "@/models/Schedule";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -147,6 +148,51 @@ export async function deletePost(postId: string) {
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/manage");
     return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Gets schedule for a specific grade level and type
+ */
+export async function getSchedule(gradeLevel: string, type: "lecture" | "exam" = "lecture") {
+  try {
+    await dbConnect();
+    const schedule = await Schedule.findOne({ gradeLevel, type }).lean();
+    if (!schedule) return { success: true, schedule: null };
+    return { success: true, schedule: JSON.parse(JSON.stringify(schedule)) };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Updates or creates a schedule
+ */
+export async function updateSchedule(data: {
+  gradeLevel: string;
+  type: "lecture" | "exam";
+  weeklyData?: any;
+  examData?: any;
+}) {
+  try {
+    await dbConnect();
+    const { gradeLevel, type, weeklyData, examData } = data;
+    
+    const schedule = await Schedule.findOneAndUpdate(
+      { gradeLevel, type },
+      { 
+        weeklyData, 
+        examData,
+        updatedAt: new Date()
+      },
+      { upsert: true, new: true }
+    );
+
+    revalidatePath("/dashboard/schedule");
+    revalidatePath("/management");
+    return { success: true, schedule: JSON.parse(JSON.stringify(schedule)) };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

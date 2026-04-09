@@ -29,17 +29,17 @@ export default function PostsList({ posts }: { posts: any[] }) {
       
       <div className="grid grid-cols-1 gap-4">
          {posts?.map((post: any) => (
-            <div key={post._id} className="p-5 rounded-[2rem] bg-white/5 border border-white/5 flex items-center justify-between hover:border-secondary/20 transition-all group relative overflow-hidden">
-               <div className={`absolute left-0 top-0 bottom-0 w-1 ${post.type === 'important' ? 'bg-red-500' : 'bg-secondary'}`} />
+            <div key={post._id} className="p-6 rounded-[2rem] glass-morphism border-white/5 flex items-center justify-between hover:border-white/10 transition-all group relative overflow-hidden">
+               <div className={`absolute left-0 top-0 bottom-0 w-1 ${post.type === 'important' ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.5)]'}`} />
                
-               <div className="flex items-center gap-5">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-500 group-hover:text-secondary transition-colors">
-                     <MessageSquare className="w-4 h-4" />
+               <div className="flex items-center gap-6">
+                  <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-slate-500 group-hover:text-blue-400 group-hover:scale-110 transition-all">
+                     <MessageSquare className="w-5 h-5" />
                   </div>
                   <div>
-                     <h4 className="font-bold text-sm text-slate-200 line-clamp-1">{post.title}</h4>
-                     <p className="text-[9px] text-slate-600 font-mono flex items-center gap-2">
-                        <UserIcon className="w-3 h-3" /> {post.author} // {post.type}
+                     <h4 className="font-bold text-[13px] text-white/90 line-clamp-1 group-hover:text-white transition-colors">{post.title}</h4>
+                     <p className="text-[10px] text-slate-500 font-mono flex items-center gap-2 mt-1">
+                        <UserIcon className="w-3 h-3 text-blue-500/50" /> {post.author} <span className="text-slate-700">//</span> <span className={post.type === 'important' ? 'text-red-400/70' : 'text-blue-400/70'}>{post.type}</span>
                      </p>
                   </div>
                </div>
@@ -47,7 +47,7 @@ export default function PostsList({ posts }: { posts: any[] }) {
                <button 
                  disabled={deleting === post._id}
                  onClick={() => handleDelete(post._id)}
-                 className="p-3 rounded-xl bg-white/5 text-slate-800 hover:bg-red-500/10 hover:text-red-500 transition-all disabled:opacity-50"
+                 className="p-3.5 rounded-xl bg-white/5 text-slate-800 hover:bg-red-500 hover:text-white transition-all disabled:opacity-50 shadow-lg"
                >
                   <Trash2 className="w-4 h-4" />
                </button>

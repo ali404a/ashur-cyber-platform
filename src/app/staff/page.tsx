@@ -114,34 +114,34 @@ export default function StaffLoginPage() {
       />
 
       {/* 4. Scanning lines effect */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.02]" style={{
-        background: "repeating-linear-gradient(0deg, transparent, transparent 2px, #fff 3px, transparent 3px)",
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]" style={{
+        background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(37,99,235,0.1) 3px, transparent 3px)",
         backgroundSize: "100% 4px"
       }} />
 
-      {/* --- HUD DECORATIONS --- */}
-      <div className="absolute top-10 left-10 hidden xl:flex flex-col gap-10 opacity-40">
-         <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-md">
-               <Activity className="w-5 h-5 text-blue-400" />
-            </div>
-            <div className="text-[10px] font-mono text-slate-400 space-y-1">
-               <p className="font-bold text-blue-400 uppercase tracking-tighter">NODE_STAUS: ONLINE</p>
-               <p>SECURE_CHANNEL_READY</p>
-            </div>
-         </div>
-      </div>
-
-      <div className="absolute bottom-10 right-10 hidden xl:flex flex-col gap-10 opacity-40">
-         <div className="flex items-center gap-4">
-            <div className="text-[10px] font-mono text-slate-400 space-y-1 text-left">
-               <p className="font-bold text-blue-400 uppercase tracking-tighter">ENCRYPTION: AES_256</p>
-               <p>ASHUR_PROTOCOL_ENABLED</p>
-            </div>
-            <div className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-md">
-               <Binary className="w-5 h-5 text-blue-400" />
-            </div>
-         </div>
+      {/* 5. Floating Particles */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ 
+              x: Math.random() * 100 + "%", 
+              y: Math.random() * 100 + "%",
+              opacity: Math.random() * 0.5
+            }}
+            animate={{ 
+              y: [null, Math.random() * -100 - 50 + "%"],
+              opacity: [0, 0.5, 0]
+            }}
+            transition={{ 
+              duration: Math.random() * 10 + 10, 
+              repeat: Infinity, 
+              ease: "linear",
+              delay: Math.random() * 5
+            }}
+            className="absolute w-1 h-1 bg-blue-400 rounded-full blur-[1px]"
+          />
+        ))}
       </div>
 
       {/* --- MAIN LOGIN TERMINAL --- */}
@@ -192,8 +192,9 @@ export default function StaffLoginPage() {
           <div className="flex gap-3 p-2 bg-black/40 border border-white/5 rounded-2xl mb-10 overflow-hidden relative">
             <motion.div 
               layout
-              animate={{ x: isAdmin ? "0%" : "100%" }}
-              className={`absolute inset-y-2 left-2 ${isAdmin ? "w-[calc(50%-8px)]" : "w-[calc(50%-8px)] -translate-x-[calc(100%+8px)]"} bg-blue-600 rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)]`}
+              animate={{ x: isAdmin ? "0%" : "-100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="absolute inset-y-2 right-2 w-[calc(50%-8px)] bg-blue-600 rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)]"
             />
             <button
               type="button"

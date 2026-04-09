@@ -30,7 +30,7 @@ export default function AdminLayoutClient({ children, activeTab, onTabChange, st
 
   async function handleLogout() {
     await logout();
-    router.push("/staff");
+    window.location.href = "/";
   }
 
   return (

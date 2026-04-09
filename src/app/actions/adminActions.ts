@@ -112,3 +112,24 @@ export async function createStaffAccount(formData: FormData) {
     return { success: false, error: "فشل إنشاء الحساب، حاول مرة أخرى" };
   }
 }
+
+/**
+ * Updates a user's role and position
+ */
+export async function updateStaffInfo(userId: string, data: { role: string, position: string, fullName: string }) {
+  try {
+    const admin = await verifyAuth("admin");
+    if (!admin) return { success: false, error: "غير مصرح لك بتعديل بيانات الكادر" };
+
+    await User.findByIdAndUpdate(userId, { 
+      role: data.role, 
+      position: data.position,
+      fullName: data.fullName
+    });
+    
+    revalidatePath("/admins");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

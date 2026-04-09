@@ -62,11 +62,11 @@ export default function AddMaterialForm({ subjects }: { subjects: any[] }) {
          </div>
          <div className="space-y-2 md:col-span-2">
             <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest block pr-2">Module_Title</label>
-            <input name="title" required type="text" placeholder="عنوان المحاضرة (مثلاً: المحاضرة الأولى - مقدمة)" className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-blue-500 transition-all" />
+            <input name="title" required type="text" placeholder="عنوان المحاضرة (مثلاً: المحاضرة الأولى - مقدمة)" className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-sm text-white outline-none focus:border-blue-500 transition-all placeholder:text-slate-500" />
          </div>
          <div className="space-y-2 md:col-span-2">
             <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest block pr-2">External_URL</label>
-            <input name="url" required type="text" placeholder="https://..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-blue-500 transition-all font-mono" />
+            <input name="url" required type="text" placeholder="https://..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-sm text-white outline-none focus:border-blue-500 transition-all font-mono placeholder:text-slate-500" />
          </div>
 
          {status && (
