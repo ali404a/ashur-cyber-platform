@@ -149,7 +149,7 @@ export default function StaffLoginPage() {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-lg mx-4"
+        className="relative z-50 w-full max-w-lg mx-4"
       >
         {/* Terminal Header Info */}
         <div className="text-center mb-10">
@@ -226,14 +226,14 @@ export default function StaffLoginPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_5px_rgba(37,99,235,0.5)]" />
               </div>
               <div className="relative group">
-                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity" />
-                <Phone className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
+                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
+                <Phone className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors z-20 pointer-events-none" />
                 <input
                   name="phone"
                   type="text"
                   required
                   placeholder="07XXXXXXXXX"
-                  className="w-full bg-[#020617]/50 border border-white/5 rounded-2xl py-5 pr-14 pl-5 text-sm text-white placeholder:text-slate-700 focus:border-blue-500/30 focus:outline-none transition-all font-mono"
+                  className="w-full bg-[#020617]/50 border border-white/5 rounded-2xl py-5 pr-14 pl-5 text-sm text-white placeholder:text-slate-700 focus:border-blue-500/30 focus:outline-none transition-all font-mono relative z-10"
                 />
               </div>
             </div>
@@ -245,17 +245,17 @@ export default function StaffLoginPage() {
                 <Lock className="w-3 h-3 text-slate-600" />
               </div>
               <div className="relative group">
-                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity" />
-                <Lock className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
+                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
+                <Lock className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors z-20 pointer-events-none" />
                 <input
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-[#020617]/50 border border-white/5 rounded-2xl py-5 pr-14 pl-14 text-sm text-white focus:border-blue-500/30 focus:outline-none transition-all font-mono"
+                  className="w-full bg-[#020617]/50 border border-white/5 rounded-2xl py-5 pr-14 pl-14 text-sm text-white focus:border-blue-500/30 focus:outline-none transition-all font-mono relative z-10"
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-blue-400 transition-colors">
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-blue-400 transition-colors z-20">
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
