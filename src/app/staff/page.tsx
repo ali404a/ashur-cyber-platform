@@ -15,9 +15,7 @@ import {
   AlertCircle, 
   Shield, 
   Users,
-  Cpu,
   Activity,
-  Globe,
   Binary
 } from "lucide-react";
 import Link from "next/link";
@@ -78,247 +76,173 @@ export default function StaffLoginPage() {
   return (
     <div
       dir="rtl"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden font-arabic bg-[#020617]"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden font-arabic bg-[#020617] text-white"
     >
-      {/* --- CINEMATIC BACKGROUND SYSTEM --- */}
-      
-      {/* 1. Base Gradient Layer */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-tr from-[#020617] via-[#050b1d] to-[#020617]" />
-
-      {/* 2. Dynamic Grid Layer */}
-      <div className="absolute inset-0 z-0 opacity-[0.05]" style={{
-        backgroundImage: `linear-gradient(rgba(37,99,235,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.4) 1px, transparent 1px)`,
-        backgroundSize: "80px 80px"
-      }} />
-
-      {/* 3. Glowing Blobs */}
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-          x: [0, 50, 0],
-          y: [0, -30, 0]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className={`absolute top-[-10%] right-[-10%] w-[500px] h-[500px] blur-[140px] rounded-full pointer-events-none ${isAdmin ? "bg-blue-600/10" : "bg-cyan-500/10"}`} 
-      />
-      <motion.div 
-        animate={{ 
-          scale: [1.2, 1, 1.2],
-          opacity: [0.4, 0.2, 0.4],
-          x: [0, -40, 0],
-          y: [0, 60, 0]
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        className={`absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] blur-[120px] rounded-full pointer-events-none ${isAdmin ? "bg-indigo-600/15" : "bg-blue-500/10"}`} 
-      />
-
-      {/* 4. Scanning lines effect */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]" style={{
-        background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(37,99,235,0.1) 3px, transparent 3px)",
-        backgroundSize: "100% 4px"
-      }} />
-
-      {/* 5. Floating Particles */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ 
-              x: Math.random() * 100 + "%", 
-              y: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.5
-            }}
-            animate={{ 
-              y: [null, Math.random() * -100 - 50 + "%"],
-              opacity: [0, 0.5, 0]
-            }}
-            transition={{ 
-              duration: Math.random() * 10 + 10, 
-              repeat: Infinity, 
-              ease: "linear",
-              delay: Math.random() * 5
-            }}
-            className="absolute w-1 h-1 bg-blue-400 rounded-full blur-[1px]"
-          />
-        ))}
+      {/* --- PREMIUM DEPTH BACKGROUND --- */}
+      <div className="absolute inset-0 z-0">
+         {/* Deep Gradient */}
+         <div className="absolute inset-0 bg-gradient-to-tr from-[#020617] via-[#050b1d] to-[#010413]" />
+         
+         {/* Animated Glows - Behind and pointer-events-none */}
+         <motion.div 
+           animate={{ 
+             scale: [1, 1.1, 1],
+             opacity: [0.3, 0.4, 0.3],
+             x: ["-10%", "5%", "-10%"] 
+           }}
+           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none"
+         />
+         
+         {/* HUD Gridlines - Barely visible, strictly decorative */}
+         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+            backgroundImage: `linear-gradient(rgba(37,99,235,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.3) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px"
+         }} />
       </div>
 
-      {/* --- MAIN LOGIN TERMINAL --- */}
+      {/* --- INTERACTIVE CONTAINER --- */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-50 w-full max-w-lg mx-4"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative z-20 w-full max-w-[500px] mx-4"
       >
-        {/* Terminal Header Info */}
-        <div className="text-center mb-10">
-          <motion.div 
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-3xl"
-          >
-            <div className={`w-1.5 h-1.5 rounded-full animate-pulse bg-blue-500`} />
-            <span className="text-[10px] text-blue-400 font-mono font-bold uppercase tracking-[0.4em]">Ashur // Operations // Center</span>
-          </motion.div>
-
-          <div className="space-y-4">
-             <div className="flex items-center justify-center gap-6">
-                <div className="h-[2px] w-12 bg-gradient-to-r from-transparent to-blue-500/50" />
-                <div className={`p-6 rounded-[2rem] bg-[#050b1d]/80 border border-white/10 shadow-[0_0_50px_rgba(37,99,235,0.1)] transition-all duration-500 ${isAdmin ? "text-blue-400 shadow-blue-500/20" : "text-cyan-400 shadow-cyan-500/20"}`}>
-                   {isAdmin ? <Shield className="w-12 h-12" /> : <Users className="w-12 h-12" />}
-                </div>
-                <div className="h-[2px] w-12 bg-gradient-to-l from-transparent to-blue-500/50" />
-             </div>
-             
-             <h1 className="text-4xl font-black text-white tracking-tighter leading-none italic">
-               {isAdmin ? "مركز التحكم الإداري" : "بوابة الكادر الأكاديمي"}
-             </h1>
-             <p className="text-[11px] text-slate-500 font-mono tracking-[0.2em] font-bold uppercase">
-               {isAdmin ? "MASTER_AUTHORITY // LEVEL_01_ACCESS" : "STAFF_PORTAL // CONTENT_MANAGEMENT"}
-             </p>
-          </div>
+        
+        {/* Terminal Header */}
+        <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-4 mb-8">
+               <div className="w-16 h-[1px] bg-gradient-to-r from-transparent to-blue-500/50" />
+               <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 ${isAdmin ? "text-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.2)]" : "text-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.2)]"} transition-all duration-500`}>
+                  {isAdmin ? <Shield className="w-10 h-10" /> : <Users className="w-10 h-10" />}
+               </div>
+               <div className="w-16 h-[1px] bg-gradient-to-l from-transparent to-blue-500/50" />
+            </div>
+            
+            <h1 className="text-4xl font-black tracking-tighter mb-2 italic">
+               {isAdmin ? "مسؤول النظام" : "لوحة الكادر التدريسي"}
+            </h1>
+            <p className="text-[10px] font-mono font-bold tracking-[0.4em] uppercase text-blue-500/60">
+               Secured // Academic_Authority // v3.0
+            </p>
         </div>
 
-        {/* Command Center Card */}
-        <div className="bg-[#050b1d]/40 border border-white/5 rounded-[3rem] p-10 md:p-14 shadow-2xl backdrop-blur-3xl relative">
-          
-          {/* Subtle Corner Accents */}
-          <div className="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-blue-500/30 rounded-tr-lg" />
-          <div className="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-blue-500/30 rounded-bl-lg" />
+        {/* Main Card */}
+        <div className="glass-morphism-strong p-10 md:p-14 rounded-[3rem] border-white/10 shadow-2xl relative">
+           
+           {/* Mode Switcher */}
+           <div className="flex p-1.5 bg-black/40 rounded-2xl mb-10 border border-white/5 relative">
+              <motion.div 
+                animate={{ x: isAdmin ? "0%" : "-100%" }}
+                transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                className="absolute inset-y-1.5 right-1.5 w-[calc(50%-6px)] bg-blue-600 rounded-xl shadow-lg"
+              />
+              <button 
+                onClick={() => { setMode("admin"); setError(""); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black relative z-10 transition-colors ${isAdmin ? "text-white" : "text-slate-500 hover:text-slate-300"}`}
+              >
+                 <Lock className="w-3.5 h-3.5" />
+                 مسؤول
+              </button>
+              <button 
+                onClick={() => { setMode("staff"); setError(""); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black relative z-10 transition-colors ${!isAdmin ? "text-white" : "text-slate-500 hover:text-slate-300"}`}
+              >
+                 <Users className="w-3.5 h-3.5" />
+                 كادر تدريسي
+              </button>
+           </div>
 
-          {/* Role Switcher (Tactical Toggle) */}
-          <div className="flex gap-3 p-2 bg-black/40 border border-white/5 rounded-2xl mb-10 overflow-hidden relative">
-            <motion.div 
-              layout
-              animate={{ x: isAdmin ? "0%" : "-100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="absolute inset-y-2 right-2 w-[calc(50%-8px)] bg-blue-600 rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)]"
-            />
-            <button
-              type="button"
-              onClick={() => { setMode("admin"); setError(""); }}
-              className={`flex-1 flex items-center justify-center gap-3 py-3.5 rounded-xl text-xs font-black transition-all relative z-10 ${
-                isAdmin ? "text-white" : "text-slate-500 hover:text-slate-300"
-              }`}
-            >
-              <Cpu className="w-4 h-4" />
-              مسؤول النظام
-            </button>
-            <button
-              type="button"
-              onClick={() => { setMode("staff"); setError(""); }}
-              className={`flex-1 flex items-center justify-center gap-3 py-3.5 rounded-xl text-xs font-black transition-all relative z-10 ${
-                !isAdmin ? "text-white" : "text-slate-500 hover:text-slate-300"
-              }`}
-            >
-              <Globe className="w-4 h-4" />
-              كادر تدريسي
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Phone Input */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest font-mono">Phone_Identity</label>
-                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_5px_rgba(37,99,235,0.5)]" />
+           <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Phone Input */}
+              <div className="space-y-3">
+                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block pr-2">رقم الهاتف</label>
+                 <div className="relative group">
+                    <Phone className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-500 transition-colors" />
+                    <input 
+                      name="phone"
+                      type="text"
+                      required
+                      placeholder="07XXXXXXXXX"
+                      className="w-full bg-[#030712] border border-white/10 rounded-2xl py-5 pr-14 pl-6 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all font-mono"
+                    />
+                 </div>
               </div>
-              <div className="relative group">
-                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
-                <Phone className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors z-20 pointer-events-none" />
-                <input
-                  name="phone"
-                  type="text"
-                  required
-                  placeholder="07XXXXXXXXX"
-                  className="w-full bg-[#020617]/50 border border-white/5 rounded-2xl py-5 pr-14 pl-5 text-sm text-white placeholder:text-slate-700 focus:border-blue-500/30 focus:outline-none transition-all font-mono relative z-10"
-                />
+
+              {/* Password Input */}
+              <div className="space-y-3">
+                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block pr-2">كلمة المرور</label>
+                 <div className="relative group">
+                    <Lock className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-500 transition-colors" />
+                    <input 
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      placeholder="••••••••"
+                      className="w-full bg-[#030712] border border-white/10 rounded-2xl py-5 pr-14 pl-14 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all font-mono"
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                    >
+                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                 </div>
               </div>
-            </div>
 
-            {/* Password Input */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest font-mono">Access_Key</label>
-                <Lock className="w-3 h-3 text-slate-600" />
-              </div>
-              <div className="relative group">
-                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
-                <Lock className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors z-20 pointer-events-none" />
-                <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  placeholder="••••••••"
-                  className="w-full bg-[#020617]/50 border border-white/5 rounded-2xl py-5 pr-14 pl-14 text-sm text-white focus:border-blue-500/30 focus:outline-none transition-all font-mono relative z-10"
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-blue-400 transition-colors z-20">
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
+              {/* Error Message */}
+              <AnimatePresence>
+                 {error && (
+                   <motion.div 
+                     initial={{ opacity: 0, height: 0 }}
+                     animate={{ opacity: 1, height: "auto" }}
+                     exit={{ opacity: 0, height: 0 }}
+                     className="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-xs font-bold"
+                   >
+                     <AlertCircle className="w-4 h-4" />
+                     {error}
+                   </motion.div>
+                 )}
+              </AnimatePresence>
 
-            {/* Error Notification */}
-            <AnimatePresence>
-              {error && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="flex items-start gap-4 p-5 bg-red-500/5 border border-red-500/10 rounded-2xl"
-                >
-                  <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                  <p className="text-[11px] text-red-500 font-bold leading-relaxed">{error}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Command Action Button */}
-            <button
-              type="submit"
-              disabled={loading || success}
-              className={`w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-4 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] ${
-                success
-                  ? "bg-green-500/20 text-green-500 border border-green-500/30"
-                  : "bg-blue-600 text-white shadow-[0_10px_30px_rgba(37,99,235,0.2)] hover:shadow-blue-500/40"
-              }`}
-            >
-              {loading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Authenticating...</>
-              ) : success ? (
-                <><ShieldCheck className="w-4 h-4" /> Access Granted</>
-              ) : (
-                <>
-                  <ShieldCheck className="w-4 h-4" />
-                  {isAdmin ? "INITIATE_ADMIN_SESSION" : "INITIATE_STAFF_SESSION"}
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Tactical Disclaimer */}
-          <div className="mt-12 pt-8 border-t border-white/5 flex flex-col items-center gap-4">
-             <div className="flex items-center gap-3 grayscale opacity-30">
-                <img src="/logo.png" alt="Ashur Logo" className="w-10 h-10 object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                <p className="text-[9px] font-mono text-slate-500 text-center leading-tight">
-                  PROPERTY OF ASHUR UNIVERSITY // CYBERSECURITY DEPT<br/>
-                  UNAUTHORIZED ACCESS IS STRICTLY PROHIBITED
-                </p>
-             </div>
-          </div>
+              {/* Action Button */}
+              <button 
+                type="submit"
+                disabled={loading || success}
+                className={`w-full py-5 rounded-2xl font-black text-sm tracking-widest uppercase flex items-center justify-center gap-4 transition-all duration-300 disabled:opacity-50 ${
+                   success 
+                   ? "bg-green-600 text-white" 
+                   : "bg-blue-600 text-white hover:bg-blue-500 shadow-[0_10px_30px_rgba(37,99,235,0.2)] hover:shadow-blue-500/40 active:scale-[0.98]"
+                }`}
+              >
+                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : success ? <ShieldCheck className="w-5 h-5" /> : <><ShieldCheck className="w-5 h-5" /> تسجيل الدخول</>}
+              </button>
+           </form>
         </div>
 
-        {/* Back Link */}
+        {/* Back navigation */}
         <div className="text-center mt-12 pb-10">
-          <Link href="https://ashur.alsadim.xyz" className="inline-flex items-center gap-3 text-[10px] font-black text-slate-500 hover:text-blue-400 transition-all group uppercase tracking-widest italic">
-            <ArrowRight className="w-3 h-3 rotate-180 group-hover:-translate-x-1 transition-transform" />
-            العودة للمنصة الرئيسية للطلاب
-          </Link>
+           <Link href="https://ashur.alsadim.xyz" className="inline-flex items-center gap-3 text-xs font-bold text-slate-500 hover:text-blue-500 transition-colors group">
+              <ArrowRight className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
+              العودة للمنصة الرئيسية للطلاب
+           </Link>
         </div>
       </motion.div>
+
+      {/* Decorative Assets - Strictly behind and non-interactive */}
+      <div className="absolute top-10 left-10 opacity-20 pointer-events-none hidden xl:block">
+         <div className="flex flex-col gap-2 scale-75">
+            <div className="flex items-center gap-4">
+               <Activity className="w-4 h-4 text-blue-500" />
+               <span className="text-[10px] font-mono">NODE: ONLINE</span>
+            </div>
+            <div className="flex items-center gap-4">
+               <Binary className="w-4 h-4 text-blue-500" />
+               <span className="text-[10px] font-mono">AUTH: AES_256</span>
+            </div>
+         </div>
+      </div>
     </div>
   );
 }
